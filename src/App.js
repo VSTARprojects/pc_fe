@@ -16,7 +16,7 @@ function App() {
           <Navbar.Collapse id="">
             <NavLink className="nav-link me-5" to="/">Home</NavLink>
             <NavLink className="nav-link me-5" to="/register">Register</NavLink>
-            <NavLink className="nav-link" to="/login">Login</NavLink>
+            <NavLink className="nav-link ms-5" to="/login">Login</NavLink>
             <NavLink className="nav-link" to="/profile">Profile</NavLink>
           </Navbar.Collapse>
           </div>

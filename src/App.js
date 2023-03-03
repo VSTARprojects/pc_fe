@@ -17,6 +17,7 @@ function App() {
             <NavLink className="nav-link me-5" to="/">Home</NavLink>
             <NavLink className="nav-link me-5" to="/register">Register</NavLink>
             <NavLink className="nav-link" to="/login">Login</NavLink>
+            <NavLink className="nav-link" to="/profile">Profile</NavLink>
           </Navbar.Collapse>
           </div>
         </Container>

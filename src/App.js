@@ -3,6 +3,8 @@ import './App.css';
 import Login from './components/Login'
 import Register from './components/Register'
 import Profile from './components/Profile'
+import SampleList from './components/SampleList';
+import SampleData from './components/SampleData';
 import {Routes,Route,NavLink} from 'react-router-dom'
 import {Navbar,Container} from 'react-bootstrap'
 
@@ -18,7 +20,9 @@ function App() {
             <NavLink className="nav-link me-5" to="/">Home</NavLink>
             <NavLink className="nav-link me-5" to="/register">Register</NavLink>
             <NavLink className="nav-link me-5" to="/login">Login</NavLink>
+            <NavLink className="nav-link me-5" to="/samplelist">Samples</NavLink>
             <NavLink className="nav-link" to="/profile">Profile</NavLink>
+           
           </Navbar.Collapse>
           </div>
         </Container>
@@ -28,7 +32,10 @@ function App() {
       <Routes>
         <Route  path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/samplelist" element={<SampleList />} />
+        <Route path="/sampledata" element={<SampleData />} />
         <Route path="/profile" element={<Profile />} />
+        
       </Routes>
       </div>
       </div>

@@ -18,7 +18,7 @@ function Register() {
       </Form.Group>
     
       <Form.Group as={Row} className="mb-3 w-50 mx-auto" controlId="formUsername">
-        <Form.Label column sm={1} className="d-flex justify-content-end">Lastname</Form.Label>
+        <Form.Label column sm={1} className="d-flex justify-content-end">Username</Form.Label>
         <Col sm={11}>
           <Form.Control type="text" placeholder="Enter Username" />
         </Col>

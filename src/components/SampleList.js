@@ -1,15 +1,29 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import SampleListData from './SampleListData';
 import SampleData from './SampleData';
 import Table from 'react-bootstrap/Table';
+import axios from 'axios';
+
 function SampleList() {
- 
+    const column = Object.keys(SampleListData[0]);
     
- const column = Object.keys(SampleListData[0]);
+    const [samples, setSamples] = useState([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const samples = await getSamples()
+                setSamples(samples)
+            } catch(e) {
+                console.log(e)
+                setSamples(SampleListData)
+            }
+        }
+        fetchData()
+    }, [])
  
 
- const ThData =()=>{
-    
+const ThData =()=>{
      return column.map((data)=>{
          return( 
          <th key={data}>{data}</th>
@@ -17,30 +31,60 @@ function SampleList() {
      })
  }
 
-const tdData =() =>{
-   
-     return SampleListData.map((data)=>{
-       return(
-           <tr>
-                {
-                   column.map((v,index)=>{
-                        if(index!==column.length-1)
-                        {
-                            return( 
-                                <td>{data[v]}</td>
-                              )
-                        }
-                       
-                   })
-                }
-                <td><a href={column.map((t)=>{
-                    return(
-                        <td>{data[t]}</td>
-                    )
-                })}>See more</a> </td>
-           </tr>
-       )
-     })
+
+const getSamples = async () => {
+    let config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Token ce3b119c6856ae942772f8c1693ddff40d574959",
+        }
+    }
+
+    const response =  await axios.get("http://127.0.0.1:8000/api/v1/samples/", config)
+
+    const promises = response.data.map(async (element) => {
+        var sample = element
+        var sampleview = {
+            id: sample.id,
+            origin: sample.origin,
+            date_of_collection: sample.date_collected,
+            predictedLabel: sample.predicted_label,
+            humanLabel: sample.human_label
+        }
+
+        const response = await axios.get(`http://127.0.0.1:8000/api/v1/patients/${sample.patient}`, config)
+        var patient = response.data
+        sampleview.patientName = patient.name
+        sampleview.age = 11
+
+        return sampleview
+    });
+
+    const samples = await Promise.all(promises)
+    return samples
+}
+
+const tdData = () =>{  
+    return samples.map((data, id)=>{
+        return(
+            <tr id={id}>
+                <td>{data.id}</td>
+                <td>{data.patientName}</td>
+                <td>{data.age}</td>
+                <td>{data.origin}</td>
+                <td>{data.date_of_collection}</td>
+                <td>{data.predictedLabel}</td>
+                <td>{data.humanLabel}</td>
+                <td>
+                    <a href="">
+                        See more
+                    </a>
+                </td>
+            </tr>
+        )
+    })
+    
+    
 }
   return (
       <div>

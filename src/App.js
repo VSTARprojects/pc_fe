@@ -12,6 +12,7 @@ import FormDetail from './components/FormDetail';
 import Auth from './components/Auth';
 import NavBar from './components/NavBar'
 import Predict from './components/Predict';
+import SampleTable from './components/SampleTable';
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Auth/>} />
         <Route path="/predict" element={<Predict />} />
-        <Route path="/*" element={<PrivateRoute component={<Predict />} />} />
+        <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
       </Routes>
  
     </div>

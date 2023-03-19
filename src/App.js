@@ -1,4 +1,4 @@
-
+import React from 'react'
 import './App.css';
 import Login from './components/Login'
 import Register from './components/Register'
@@ -6,13 +6,17 @@ import Profile from './components/Profile'
 import SampleList from './components/SampleList';
 import SampleData from './components/SampleData';
 import {Routes,Route,NavLink} from 'react-router-dom'
+// import { BrowserRouter as Router, Route } from 'react-router-dom'
+import PrivateRoute from './components/PrivateRoute'
 import {Navbar,Container} from 'react-bootstrap'
 import FormDetail from './components/FormDetail';
+import Auth from './components/Auth';
+import NavBar from './components/NavBar'
 
 function App() {
   return (
     <div >
-     <Navbar className="m-4 border shadow"  collapseOnSelect expand="lg" bg="light" variant="">
+     {/* <Navbar className="m-4 border shadow"  collapseOnSelect expand="lg" bg="light" variant="">
         <Container>
           <Navbar.Brand href="#home" className="text-dark">Pathology</Navbar.Brand>
           <div className="ms-auto">
@@ -28,10 +32,17 @@ function App() {
           </Navbar.Collapse>
           </div>
         </Container>
-      </Navbar>
+      </Navbar> */}
+
+      <NavBar/>
+      {/* <Auth/> */}
+      <Routes>
+        <Route path="/login" element={<Auth/>} />
+        <Route path="/*" element={<PrivateRoute element={<SampleList />} />} />
+      </Routes>
       
       <div className='m-5'>
-      <Routes>
+      {/* <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/samplelist" element={<SampleList />} />
@@ -39,7 +50,7 @@ function App() {
         <Route path="/sampledata" element={<SampleData />} />
         <Route path="/profile" element={<Profile />} />
         
-      </Routes>
+      </Routes> */}
       </div>
       </div>
     

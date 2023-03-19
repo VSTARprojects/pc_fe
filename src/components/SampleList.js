@@ -9,18 +9,18 @@
     
 //     const [samples, setSamples] = useState([])
 
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 const samples = await getSamples()
-//                 setSamples(samples)
-//             } catch(e) {
-//                 console.log(e)
-//                 setSamples(SampleListData)
-//             }
-//         }
-//         fetchData()
-//     }, [])
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const samples = await getSamples()
+    //             setSamples(samples)
+    //         } catch(e) {
+    //             console.log(e)
+    //             setSamples(SampleListData)
+    //         }
+    //     }
+    //     fetchData()
+    // }, [])
  
 
 // const ThData =()=>{

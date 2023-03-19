@@ -30,17 +30,34 @@ export default function SampleTable() {
   
   const [samples, setSamples] = useState([])
 
-  useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const samples = await SampleService.get_user_samples()
-                setSamples(samples)
-            } catch(e) {
-                console.log(e)
-                setSamples(SampleListData)
-            }
+  const fetchSamples = (search) => {
+    const fetchAll = async () => {
+        try {
+            const samples = await SampleService.get_user_samples()
+            setSamples(samples)
+        } catch(e) {
+            console.log(e)
+            setSamples(SampleListData)
         }
-        fetchData()
+    }
+    const fetchMatching = async () => {
+        try {
+            const samples = await SampleService.search(search)
+            setSamples(samples)
+        } catch(e) {
+            console.log(e)
+            setSamples(SampleListData)
+        }
+    }
+    if(!search) {
+        fetchAll()
+    } else {
+        fetchMatching()
+    }
+  }
+
+  useEffect(() => {
+        fetchSamples()        
     }, [])
 
   const emptyRows =
@@ -96,7 +113,11 @@ export default function SampleTable() {
           label="Search field"
           type="search"
           variant="standard"
-          onChange={e => setSearch(e.target.value.toLowerCase())}
+          onChange={e => {
+            console.log(e.target.value)
+            setSearch(e.target.value.toLowerCase())
+            fetchSamples(e.target.value)
+        }}
         />
       </Box>
       <TableContainer component={Paper}>
@@ -139,7 +160,7 @@ export default function SampleTable() {
               : getSortedSamples(samples)
             ).map(
               sample =>
-                sample.patientName.toLowerCase().includes(search) && (
+                (
                   <TableRow
                     key={sample.id}
                     sx={{

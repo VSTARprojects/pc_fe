@@ -49,7 +49,7 @@ export default function Predict() {
     if (loading) {
       const timeoutId = setTimeout(() => {
         // simulate label prediction delay
-        const predictedLabels = files.map((file, index) => `Label for file ${index}`);
+        const predictedLabels = files.map((file, index) => "pending");
         setLabels(predictedLabels);
         setLoading(false);
       }, 2000);

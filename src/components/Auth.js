@@ -30,7 +30,6 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
 
 
 export default function Auth() {
@@ -61,9 +60,8 @@ export default function Auth() {
   
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <>
+    <Container sx={{width: '200'}}>
         <Box
           sx={{
             marginTop: 8,
@@ -126,7 +124,7 @@ export default function Auth() {
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+    </Container>
+    </>
   );
 }

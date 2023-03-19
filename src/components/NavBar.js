@@ -24,7 +24,7 @@ function NavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
  
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-  const pages = ['Products', 'Pricing', 'Blog']
+  const pages = ['Predict']
 
   const isLogged =  useSelector(state => state.isLogged)
   if(!isLogged) {
@@ -49,7 +49,9 @@ function NavBar() {
 
   const handleNavMenuItemClick = (element) => {
     if(element == "Login") {
-      navigate("/login")
+      navigate("/login", {replace:true})
+    } else if(element == "Predict") {
+      navigate("/predict", {replace:true})
     }
     handleCloseNavMenu()
   }
@@ -58,6 +60,7 @@ function NavBar() {
     if(element == "Logout") {
       AuthService.logout()
       dispath(sign_out())
+      navigate("/login")
     }
     handleCloseUserMenu()
   }
@@ -78,7 +81,7 @@ function NavBar() {
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: 'white',
               textDecoration: 'none',
             }}
           >
@@ -92,7 +95,7 @@ function NavBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color="white"
             >
               <MenuIcon />
             </IconButton>
@@ -134,7 +137,7 @@ function NavBar() {
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: 'white',
               textDecoration: 'none',
             }}
           >
@@ -161,7 +164,7 @@ function NavBar() {
                   aria-label="account of current user"
                   aria-controls="primary-search-account-menu"
                   aria-haspopup="true"
-                  color="inherit"
+                  color="white"
                 >
                   <AccountCircle />
                 </IconButton>

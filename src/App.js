@@ -8,51 +8,23 @@ import SampleData from './components/SampleData';
 import {Routes,Route,NavLink} from 'react-router-dom'
 // import { BrowserRouter as Router, Route } from 'react-router-dom'
 import PrivateRoute from './components/PrivateRoute'
-import {Navbar,Container} from 'react-bootstrap'
 import FormDetail from './components/FormDetail';
 import Auth from './components/Auth';
 import NavBar from './components/NavBar'
+import Predict from './components/Predict';
 
 function App() {
   return (
     <div >
-     {/* <Navbar className="m-4 border shadow"  collapseOnSelect expand="lg" bg="light" variant="">
-        <Container>
-          <Navbar.Brand href="#home" className="text-dark">Pathology</Navbar.Brand>
-          <div className="ms-auto">
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="">
-            <NavLink className="nav-link me-5" to="/">Home</NavLink>
-            <NavLink className="nav-link me-5" to="/register">Register</NavLink>
-            <NavLink className="nav-link me-5" to="/login">Login</NavLink>
-            <NavLink className="nav-link me-5" to="/samplelist">Samples</NavLink>
-            <NavLink className="nav-link me-5" to="/addsamples">Predict Sample</NavLink>
-            <NavLink className="nav-link" to="/profile">Profile</NavLink>
-           
-          </Navbar.Collapse>
-          </div>
-        </Container>
-      </Navbar> */}
-
       <NavBar/>
-      {/* <Auth/> */}
+
       <Routes>
         <Route path="/login" element={<Auth/>} />
-        <Route path="/*" element={<PrivateRoute element={<SampleList />} />} />
+        <Route path="/predict" element={<Predict />} />
+        <Route path="/*" element={<PrivateRoute component={<Predict />} />} />
       </Routes>
-      
-      <div className='m-5'>
-      {/* <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/samplelist" element={<SampleList />} />
-        <Route path="/addsamples" element={<FormDetail />} />
-        <Route path="/sampledata" element={<SampleData />} />
-        <Route path="/profile" element={<Profile />} />
-        
-      </Routes> */}
-      </div>
-      </div>
+ 
+    </div>
     
   );
 }

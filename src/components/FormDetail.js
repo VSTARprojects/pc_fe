@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Form, Button, Container } from "react-bootstrap";
 import { MdLogin } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function FormDetail() {
   const {
@@ -25,28 +26,41 @@ function FormDetail() {
 
   const navigate = useNavigate();
 
-  const onFormSubmit = (userObj) => {
-      console.log(userObj)
-  //   //create FormData object
-  //   let formData = new FormData();
-  //   //append values to it
-  //   formData.append("userObj", JSON.stringify(userObj));
-  //   formData.append("photo", img);
-  //   // http post req
-  //   // axios
-  //   //   .post("http://localhost:4000/user-api/create-user", formData)
-  //   //   .then((response) => {
-  //   //     alert(response.data.message);
-  //   //     if user created
-  //   //     if (response.data.message === "New User created") {
-  //   //       navigate to login
-  //   //       navigate("/login");
-  //   //     }
-  //   //   })
-  //   //   .catch((error) => {
-  //   //     console.log(error);
-  //   //     alert("Something went wrong in creating user");
-  //   //   });
+  const onFormSubmit = (sample) => {
+    let config = {
+      headers: {
+          "Content-Type": "multipart/form-data",
+          "Authorization": "Token ce3b119c6856ae942772f8c1693ddff40d574959",
+      }
+    }
+
+    console.log(sample)
+    // TODO: replace the hardcoded data below with sample attributes, once frontend is done
+
+    let formData = new FormData();
+    formData.append("owner", 2);
+    formData.append("patient", 2);
+    formData.append("date_collected", "2023-03-01T14:23:10Z");
+    formData.append("diagnosis_code", "23432");
+    formData.append("type", "biopsy");
+    formData.append("origin", "Urine");
+    formData.append("comments", "");
+    formData.append("symptoms", "");
+    formData.append("image", img);
+    // formData.append("human_label", "adenocarcinoma");
+
+    axios
+      .post("http://127.0.0.1:8000/api/v1/samples/", formData, config)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Something went wrong in creating the sample");
+      });
+
+    
+
    };
 
   return (

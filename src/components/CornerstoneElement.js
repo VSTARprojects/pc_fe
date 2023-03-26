@@ -22,6 +22,8 @@ import GestureIcon from '@mui/icons-material/Gesture';
 import UndoIcon from '@mui/icons-material/Undo';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Tooltip from '@mui/material/Tooltip';
+import StraightenIcon from '@mui/icons-material/Straighten';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
 
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
@@ -111,6 +113,21 @@ class CornerstoneElement extends React.Component {
     cornerstone.reset(this.element);
   }
 
+  save = () => {
+    var allToolData = {};
+    var toolTypes = ['probe', 'ellipticalRoi', 'rectangleRoi', 'highlight', 'freehand' ,'length', 'angle'];
+    for (var i = 0; i < toolTypes.length; i++) {
+        var toolType = toolTypes[i];
+        var toolData = cornerstoneTools.getToolState(this.element, toolType);
+        if (toolData !== undefined) {
+            allToolData[toolTypes[i]] = toolData;
+        }
+    }
+    var toolData = JSON.stringify(allToolData);
+    const viewport = JSON.stringify(cornerstone.getViewport(this.element));
+    console.log(toolData, viewport)
+  }
+
   render() {
     return (
       <div>
@@ -149,6 +166,15 @@ class CornerstoneElement extends React.Component {
                             <MenuItem onClick={() => {this.enableTool("probe", 1);}}>
                                 <ListItemIcon>
                                     <GpsFixedIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Probe</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+
+                        <Tooltip title='Length' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("length", 1);}}>
+                                <ListItemIcon>
+                                    <StraightenIcon fontSize="small" />
                                 </ListItemIcon>
                                 {/* <ListItemText>Probe</ListItemText> */}
                             </MenuItem>
@@ -217,6 +243,15 @@ class CornerstoneElement extends React.Component {
                                 {/* <ListItemText>Reset</ListItemText> */}
                             </MenuItem>
                         </Tooltip>
+
+                        <Tooltip title='Save' placement="left-start">
+                            <MenuItem onClick={() => {this.save();}}>
+                                <ListItemIcon>
+                                    <SaveAltIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Reset</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
                     </MenuList>
                 </Paper>
             </Grid>
@@ -246,11 +281,14 @@ class CornerstoneElement extends React.Component {
   }
 
   onImageRendered() {
-    const viewport = cornerstone.getViewport(this.element);
+    const viewportt = cornerstone.getViewport(this.element);
    
     this.setState({
-      viewport
+      viewportt
     });
+
+
+    
   }
 
   onNewImage() {
@@ -259,6 +297,27 @@ class CornerstoneElement extends React.Component {
     this.setState({
       imageId: enabledElement.image.imageId
     });
+
+    const toolData = this.props.toolData
+    const viewport = this.props.viewport
+
+    if(toolData.length > 0) {
+        var allToolData = JSON.parse(toolData);
+        for (var toolType in allToolData) {
+            if (allToolData.hasOwnProperty(toolType)) {
+                for (var i = 0; i < allToolData[toolType].data.length; i++) {
+                    var tData = allToolData[toolType].data[i];
+                    cornerstoneTools.addToolState(this.element, toolType, tData);
+                }
+            }
+        }
+        cornerstone.updateImage(this.element);
+    }
+
+    if(viewport.length > 0) {
+        cornerstone.setViewport(this.element, JSON.parse(viewport));
+        cornerstone.updateImage(this.element);
+    }
   }
 
   componentDidMount() {
@@ -302,6 +361,9 @@ class CornerstoneElement extends React.Component {
       element.addEventListener("cornerstonenewimage", this.onNewImage);
       window.addEventListener("resize", this.onWindowResize);
     });
+
+
+    
     
   }
 

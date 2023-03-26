@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { Grid } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import ContrastIcon from '@mui/icons-material/Contrast';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
@@ -24,6 +24,9 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import Tooltip from '@mui/material/Tooltip';
 import StraightenIcon from '@mui/icons-material/Straighten';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import SaveAsModal from "./SaveAsModal";
+import SampleService from "../services/SampleService";
+
 
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
@@ -51,6 +54,18 @@ const bottomRightStyle = {
   color: "white"
 };
 
+const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
 class CornerstoneElement extends React.Component {
   constructor(props) {
     super(props);
@@ -58,7 +73,10 @@ class CornerstoneElement extends React.Component {
       stack: props.stack,
       viewport: cornerstone.getDefaultViewport(null, undefined),
       imageId: props.stack.imageIds[0],
-      toolStack: []
+      toolStack: [],
+      modalOpen: false,
+      fileName: '',
+      annotations: [],
     };
 
     this.onImageRendered = this.onImageRendered.bind(this);
@@ -123,9 +141,14 @@ class CornerstoneElement extends React.Component {
             allToolData[toolTypes[i]] = toolData;
         }
     }
-    var toolData = JSON.stringify(allToolData);
-    const viewport = JSON.stringify(cornerstone.getViewport(this.element));
-    console.log(toolData, viewport)
+    const viewport = cornerstone.getViewport(this.element);
+
+    const annotStr = JSON.stringify({toolData: allToolData, viewport: viewport})
+    this.setState({annotations: [...this.state.annotations, annotStr]})
+    
+    const modalOpen = true;
+    this.setState({modalOpen});
+
   }
 
   render() {
@@ -272,6 +295,7 @@ class CornerstoneElement extends React.Component {
                 </div>
             </Grid>
         </Grid>
+        <SaveAsModal open={this.state.modalOpen} onSave={(fileName) => {this.setState({fileName: fileName, modalOpen: false});SampleService.setAnnotations(this.state.annotations);}} onCancel={() => {this.setState({modalOpen: false})}}/>
       </div>
     );
   }
@@ -282,13 +306,9 @@ class CornerstoneElement extends React.Component {
 
   onImageRendered() {
     const viewportt = cornerstone.getViewport(this.element);
-   
     this.setState({
       viewportt
-    });
-
-
-    
+    });    
   }
 
   onNewImage() {
@@ -298,26 +318,33 @@ class CornerstoneElement extends React.Component {
       imageId: enabledElement.image.imageId
     });
 
-    const toolData = this.props.toolData
-    const viewport = this.props.viewport
+    const receivedAnnotations = this.props.annotations
+    console.log(receivedAnnotations)
+    if(receivedAnnotations) {
+        const parsedAnnotations = JSON.parse(receivedAnnotations)
+        // console.log(parsedAnnotations)
+        const toolData = parsedAnnotations["toolData"]
+        const viewport = parsedAnnotations["viewport"]
 
-    if(toolData.length > 0) {
-        var allToolData = JSON.parse(toolData);
-        for (var toolType in allToolData) {
-            if (allToolData.hasOwnProperty(toolType)) {
-                for (var i = 0; i < allToolData[toolType].data.length; i++) {
-                    var tData = allToolData[toolType].data[i];
-                    cornerstoneTools.addToolState(this.element, toolType, tData);
+        if(toolData) {
+            var allToolData = JSON.parse(toolData);
+            for (var toolType in allToolData) {
+                if (allToolData.hasOwnProperty(toolType)) {
+                    for (var i = 0; i < allToolData[toolType].data.length; i++) {
+                        var tData = allToolData[toolType].data[i];
+                        cornerstoneTools.addToolState(this.element, toolType, tData);
+                    }
                 }
             }
+            cornerstone.updateImage(this.element);
         }
-        cornerstone.updateImage(this.element);
-    }
 
-    if(viewport.length > 0) {
-        cornerstone.setViewport(this.element, JSON.parse(viewport));
-        cornerstone.updateImage(this.element);
+        if(viewport) {
+            cornerstone.setViewport(this.element, JSON.parse(viewport));
+            cornerstone.updateImage(this.element);
+        }
     }
+    
   }
 
   componentDidMount() {

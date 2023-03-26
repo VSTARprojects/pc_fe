@@ -1,10 +1,27 @@
 import React from "react";
-import { render } from "react-dom";
 import * as cornerstone from "cornerstone-core";
 import * as cornerstoneMath from "cornerstone-math";
 import * as cornerstoneTools from "cornerstone-tools";
 import Hammer from "hammerjs";
 import * as cornerstoneWebImageLoader from "cornerstone-web-image-loader";
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import { Grid } from "@mui/material";
+import ContrastIcon from '@mui/icons-material/Contrast';
+import PanToolIcon from '@mui/icons-material/PanTool';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
+import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
+import CropDinIcon from '@mui/icons-material/CropDin';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import GestureIcon from '@mui/icons-material/Gesture';
+import UndoIcon from '@mui/icons-material/Undo';
+import ReplayIcon from '@mui/icons-material/Replay';
+import Tooltip from '@mui/material/Tooltip';
 
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
@@ -77,7 +94,7 @@ class CornerstoneElement extends React.Component {
     this.disableAllTools();
     this.setState({toolStack})
 
-    if(lastTool == "wwwc") {
+    if(lastTool === "wwwc") {
       cornerstone.reset(this.element);
     }
   }
@@ -97,108 +114,129 @@ class CornerstoneElement extends React.Component {
   render() {
     return (
       <div>
-        <div
-          className="viewportElement"
-          style={divStyle}
-          ref={input => {
-            this.element = input;
-          }}
-        >
-          <canvas className="cornerstone-canvas" />
-          <div style={bottomLeftStyle}>Zoom: {this.state.viewport.scale}</div>
-          <div style={bottomRightStyle}>
-            WW/WC: {this.state.viewport.voi.windowWidth} /{" "}
-            {this.state.viewport.voi.windowCenter}
-          </div>
-        </div>
-        <button
-          onClick={() => {
-            this.enableTool("wwwc", 1);
-          }}
-          className="list-group-item"
-        >
-          WW/WC
-        </button>
-        <button
-          onClick={() => {
-            this.enableTool("pan", 3);
-          }}
-          className="list-group-item"
-        >
-          Pan
-        </button>
-        <button
-          onClick={() => {
-            this.enableTool("zoom", 5);
-          }}
-          className="list-group-item"
-        >
-          Zoom
-        </button>
-        <button
-          onClick={() => {
-            this.enableTool("probe", 1);
-          }}
-          className="list-group-item"
-        >
-          Probe
-        </button>
-        <button
-          onClick={() => {
-            this.enableTool("ellipticalRoi", 1);
-          }}
-          className="list-group-item"
-        >
-          Elliptical ROI
-        </button>
-        <button
-          onClick={() => {
-            this.enableTool("rectangleRoi", 1);
-          }}
-          className="list-group-item"
-        >
-          Rectangle ROI
-        </button>
-        <button
-          onClick={() => {
-            this.enableTool("angle", 1);
-          }}
-          className="list-group-item"
-        >
-          Angle
-        </button>
-        <button
-          onClick={() => {
-            this.enableTool("highlight", 1);
-          }}
-          className="list-group-item"
-        >
-          Highlight
-        </button>
-        <button
-          onClick={() => {
-            this.enableTool("freehand", 1);
-          }}
-          className="list-group-item"
-        >
-          Freeform ROI
-        </button>
-        <button
-          onClick={() => {
-            this.undo()
-          }}
-          className="list-group-item"
-        >
-          undo
-        </button>
-        <button
-          onClick={() => {
-            this.redo()
-          }}
-          className="list-group-item"
-        >
-          Reset
-        </button>
+        <Grid container >
+            <Grid item xs={1} sx={{m:1}}>
+                <Paper sx={{ width: '50px', maxWidth: '100%' }}>
+                    <MenuList>
+                        <Tooltip title='WW/WC' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("wwwc", 1);}}>
+                                <ListItemIcon >
+                                    <ContrastIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>WW/WC</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                        
+                        <Tooltip title='Pan' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("pan", 3);}}>
+                                <ListItemIcon>
+                                    <PanToolIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Pan</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                        
+                        <Tooltip title='Zoom' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("zoom", 5);}}>
+                                <ListItemIcon>
+                                    <ZoomInIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Zoom</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                        
+                        <Tooltip title='Probe' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("probe", 1);}}>
+                                <ListItemIcon>
+                                    <GpsFixedIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Probe</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                        
+                        <Tooltip title='Elliptical ROI' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("ellipticalRoi", 1);}}>
+                                <ListItemIcon>
+                                    <PanoramaFishEyeIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Elliptical ROI</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                        
+                        <Tooltip title='Rectangle ROI' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("rectangleRoi", 1);}}>
+                                <ListItemIcon>
+                                    <CropDinIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Rectangle ROI</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                        
+                        <Tooltip title='Angle' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("angle", 1);}}>
+                                <ListItemIcon>
+                                    <ChevronLeftIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Angle</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+
+                        <Tooltip title='Highlight' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("highlight", 1);}}>
+                                <ListItemIcon>
+                                    <AutoFixHighIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Highlight</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                        
+                        <Tooltip title='Freeform ROI' placement="left-start">
+                            <MenuItem onClick={() => {this.enableTool("freehand", 1);}}>
+                                <ListItemIcon>
+                                    <GestureIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Freeform ROI</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                        
+                        <Divider />
+                        <Tooltip title='Undo' placement="left-start">
+                            <MenuItem onClick={() => {this.undo();}}>
+                                <ListItemIcon>
+                                    <UndoIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Undo</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                        
+                        <Tooltip title='Reset' placement="left-start">
+                            <MenuItem onClick={() => {this.redo();}}>
+                                <ListItemIcon>
+                                    <ReplayIcon fontSize="small" />
+                                </ListItemIcon>
+                                {/* <ListItemText>Reset</ListItemText> */}
+                            </MenuItem>
+                        </Tooltip>
+                    </MenuList>
+                </Paper>
+            </Grid>
+            <Grid item xs={8}>
+                <div
+                    className="viewportElement"
+                    style={divStyle}
+                    ref={input => {
+                        this.element = input;
+                    }}
+                    >
+                    <canvas className="cornerstone-canvas"/>
+                    <div style={bottomLeftStyle}>Zoom: {this.state.viewport.scale}</div>
+                    <div style={bottomRightStyle}>
+                        WW/WC: {this.state.viewport.voi.windowWidth} /{" "}
+                        {this.state.viewport.voi.windowCenter}
+                    </div>
+                </div>
+            </Grid>
+        </Grid>
       </div>
     );
   }

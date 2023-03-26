@@ -1,3 +1,4 @@
+import { Box, Grid } from '@material-ui/core';
 import React from 'react'
 import CornerstoneElement from './CornerstoneElement';
 
@@ -12,7 +13,11 @@ const stack = {
 export default function SampleDetail() {
   return (
     <div>
-        <CornerstoneElement stack={{ ...stack }} />
+        <Box sx={{m:5, p:5}}>
+            <Grid container justifyContent='center'>
+                <CornerstoneElement stack={{ ...stack }}/>
+            </Grid>
+       </Box>
     </div>
   )
 }

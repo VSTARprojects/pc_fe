@@ -8,6 +8,8 @@ import Auth from './components/Auth';
 import NavBar from './components/NavBar'
 import Predict from './components/Predict';
 import SampleTable from './components/SampleTable';
+import SampleData from './components/SampleData';
+import ImageLists from './components/ImageLists';
 
 function App() {
   return (
@@ -15,9 +17,12 @@ function App() {
       <NavBar/>
 
       <Routes>
-        <Route path="/login" element={<Auth/>} />
+        {/* <Route path="/login" element={<Auth/>} />
         <Route path="/predict" element={<Predict />} />
-        <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
+        <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} /> */}
+        <Route path="/sampledetail" element={<SampleData />} />
+        <Route path="/imagelist" element={<ImageLists />} />
+        <Route path="/samplelist" element={<SampleTable />} />
       </Routes>
  
     </div>

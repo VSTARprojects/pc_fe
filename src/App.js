@@ -8,6 +8,10 @@ import NavBar from './components/NavBar'
 import Predict from './components/Predict';
 import SampleTable from './components/SampleTable';
 import SampleDetail from './components/SampleDetail';
+import SampleCreation from './components/SampleCreation';
+import FormDetail from './components/FormDetail';
+import PatientForm from './components/PatientForm';
+import { Navigate } from 'react-router-dom';
 
 function App() {
   return (
@@ -18,7 +22,11 @@ function App() {
         <Route path="/login" element={<Auth/>} />
         <Route path="/predict" element={<Predict />} />
         <Route path="/sample" element={<SampleDetail />} />
-        <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
+        <Route path="/sampleCreation" element={<SampleCreation />} >
+        </Route>
+        <Route path="/patientForm" element={<PatientForm />} />
+        <Route path="/formDetail" element={<FormDetail />} />
+        <Route path="/*" element={ <SampleTable />}  />
       </Routes>
  
     </div>

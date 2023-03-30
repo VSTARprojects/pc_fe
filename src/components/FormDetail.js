@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -15,12 +15,13 @@ import {
 } from "@material-ui/core";
 import SampleData from "./SampleData";
 import { useNavigate } from "react-router-dom";
+import SampleService from "../services/SampleService";
 
-function FormDetail() {
+function FormDetail({patientId}) {
     const navigate = useNavigate();
 
   const [id, setId] = useState("");
-  const [pid, setPid] = useState("");
+  const [pid, setPid] = useState(patientId != -1? patientId : "");
   const [collection_datetime, setCollectionDatetime] = useState("");
   const [diagnosis_code, setDiagnosisCode] = useState("");
   const [origin, setOrigin] = useState("");
@@ -29,41 +30,27 @@ function FormDetail() {
   const [type, setType] = useState("");
   const [image, setImage] = useState(null);
   const [human_label, setHL] = useState("");
-  const [formData, setFormData] = useState(null);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log(`Id: ${id}\n Pid: ${pid}`);
-    // let config = {
-    //     headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         "Authorization": "Token ce3b119c6856ae942772f8c1693ddff40d574959",
-    //     }
-    //   }
     console.log(`owner: ${id}\n Patient: ${pid}\n date_collected: ${image}`);
     let formData = new FormData();
-    formData.append("owner", { id });
-    formData.append("patient", { pid });
-    formData.append("date_collected", { collection_datetime });
-    formData.append("diagnosis_code", { diagnosis_code });
-    formData.append("type", { type });
-    formData.append("origin", { origin });
-    formData.append("comments", { comments });
-    formData.append("symptoms", { symptoms });
-    formData.append("image", { image });
-    formData.append("human_label", { human_label });
-    console.log(formData)
-      setFormData(formData);
-      
+    formData.append("patient", pid);
+    formData.append("date_collected", collection_datetime);
+    formData.append("diagnosis_code", diagnosis_code);
+    formData.append("type", type);
+    formData.append("origin", origin);
+    formData.append("comments", comments);
+    formData.append("symptoms", symptoms);
+    formData.append("image", image);
+    formData.append("human_label", human_label);
+    console.log(formData)    
+    SampleService.setSample(formData).then(() => {
       navigate("/sample/{pid}",{replace:true})
-    //     axios
-    //       .post("http://127.0.0.1:8000/api/v1/samples/", formData, config)
-    //       .then((response) => {
-    //         console.log(response)
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //         alert("Something went wrong in creating the sample");
-    //       });
+    }).catch((error) => {
+      console.log(error);
+      alert("Something went wrong in creating the sample");
+    });
   };
 
   const handleTypeChange = (event) => {
@@ -76,6 +63,7 @@ function FormDetail() {
     const file = event.target.files[0];
     setImage(file);
   };
+
     return (
     <>
     <Container sx={{ width: "200" }}>
@@ -98,15 +86,6 @@ function FormDetail() {
           Sample Form
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            type="text"
-            label="Owner ID"
-            value={id}
-            onChange={(event) => setId(event.target.value)}
-            margin="normal"
-            fullWidth
-            required
-          />
           <TextField
             type="text"
             label="Patient Id"
@@ -145,17 +124,17 @@ function FormDetail() {
           <Box sx={{ marginLeft: 10 }}>
             <RadioGroup value={type} onChange={handleTypeChange} required>
               <FormControlLabel
-                value="BIOPSY"
+                value="biopsy"
                 control={<Radio />}
                 label="Biopsy"
               />
               <FormControlLabel
-                value="SURGICAL_RESECTION"
+                value="surgical resection"
                 control={<Radio />}
                 label="Surgical Resection"
               />
               <FormControlLabel
-                value="OTHER"
+                value="other"
                 control={<Radio />}
                 label="Other"
               />
@@ -165,32 +144,32 @@ function FormDetail() {
           <Box sx={{ marginLeft: 10 }}>
             <RadioGroup value={origin} onChange={handleOriginChange} required>
               <FormControlLabel
-                value="BLOOD"
+                value="Blood"
                 control={<Radio />}
                 label="Blood"
               />
               <FormControlLabel
-                value="TISSUE"
+                value="Tissue"
                 control={<Radio />}
                 label="Tissue"
               />
               <FormControlLabel
-                value="URINE"
+                value="Urine"
                 control={<Radio />}
                 label="Urine"
               />
               <FormControlLabel
-                value="STOOL"
+                value="Stool"
                 control={<Radio />}
                 label="Stool"
               />
               <FormControlLabel
-                value="FLUID"
+                value="Fluid"
                 control={<Radio />}
                 label="Fluid"
               />
               <FormControlLabel
-                value="OTHER"
+                value="Other"
                 control={<Radio />}
                 label="Other"
               />

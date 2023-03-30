@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import {useNavigate } from "react-router-dom";
+import SampleService from "../services/SampleService";
 
 const useStyles = makeStyles((theme) => ({
     formContainer: {
@@ -54,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function PatientForm() {
+function PatientForm({setPatientId}) {
   const classes = useStyles();
   const [name, setName] = useState("");
   //const [id, setId] = useState('');
@@ -75,24 +76,22 @@ function PatientForm() {
     //     }
     //   }
 
-    let formData = new FormData();
-    formData.append("name", { name });
-    formData.append("sex", { gender });
-    formData.append("dob", { dob });
-    formData.append("phone_number", { phone_number });
+    var formData = new FormData();
+    formData.append("name", name);
+    formData.append("sex", gender);
+    formData.append("dob", dob);
+    formData.append("phone_number", phone_number);
+    console.log(formData)
 
     
-
-    //     axios
-    //       .post("http://127.0.0.1:8000/api/v1/samples/", formData, config)
-    //       .then((response) => {
-    //         console.log(response)
-      navigate("/formDetail" , {replace:true});
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //         alert("Something went wrong in creating the sample");
-    //       });
+    SampleService.setPatient(formData).then((response) => {
+        console.log(response.data)
+        setPatientId(response.data)
+    })
+    .catch((error) => {
+      console.log(error);
+      alert("Something went wrong in creating the patient");
+    });
   };
 
   const handleGenderChange = (event) => {
@@ -196,19 +195,19 @@ function PatientForm() {
       />
             <Typography>Gender</Typography>
              <RadioGroup value={gender} onChange={handleGenderChange} required  className={classes.radioGroup}>
-              <FormControlLabel value="MALE" control={<Radio />} label="Male" />
+              <FormControlLabel value="M" control={<Radio />} label="Male" />
               <FormControlLabel
-                value="FEMALE"
+                value="F"
                 control={<Radio />}
                 label="Female"
               />
               <FormControlLabel
-                value="OTHER"
+                value="O"
                 control={<Radio />}
                 label="Other"
               />
               <FormControlLabel
-                value="NOT_SAY"
+                value="N"
                 control={<Radio />}
                 label="Pefer not to say"
               />

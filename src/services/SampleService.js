@@ -107,8 +107,19 @@ class SampleService {
             "Content-Type": "multipart/form-data",
         }
     }
-    const response =  await axios.post(API_URL + '/samples', formData, config)
+    const response =  await axios.post(API_URL + '/samples/', formData, config)
     console.log(response)    
+    return response
+  }
+
+  async setPatient(formData) {
+    let config = {
+        headers: {
+            "Authorization": `Token ${AuthService.getToken()}`,
+            "Content-Type": 'application/x-www-form-urlencoded',
+        }
+    }
+    const response =  await axios.post(API_URL + '/patients/', formData, config)  
     return response
   }
 }

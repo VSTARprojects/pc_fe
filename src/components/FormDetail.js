@@ -125,6 +125,9 @@ function FormDetail() {
             margin="normal"
             fullWidth
             required
+            InputLabelProps={{
+              shrink: true
+          }}
           />
 
           <TextField

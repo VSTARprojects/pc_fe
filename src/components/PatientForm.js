@@ -218,7 +218,9 @@ function PatientForm() {
             type="date"
             value={dob}
             onChange={(event) => setDob(event.target.value)}
-            
+            InputLabelProps={{
+              shrink: true
+          }}
         required
         className={classes.textField}
           />

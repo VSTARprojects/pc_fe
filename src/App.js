@@ -17,7 +17,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Auth/>} />
         <Route path="/predict" element={<Predict />} />
-        <Route path="/sample" element={<SampleDetail />} />
+        <Route path="/sample" element={<SampleDetail id={18}/>} />
         <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
       </Routes>
  

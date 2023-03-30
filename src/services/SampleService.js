@@ -122,6 +122,16 @@ class SampleService {
     const response =  await axios.post(API_URL + '/patients/', formData, config)  
     return response
   }
+
+  async getallPatients() {
+    let config = {
+        headers: {
+            "Authorization": `Token ${AuthService.getToken()}`,
+        }
+    }
+    const response =  await axios.get(API_URL + '/patients/', config)  
+    return response
+  }
 }
 
 export default new SampleService();

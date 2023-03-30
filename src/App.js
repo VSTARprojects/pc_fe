@@ -22,9 +22,9 @@ function App() {
         <Route path="/login" element={<Auth/>} />
         <Route path="/predict" element={<Predict />} />
         <Route path="/sample" element={<SampleDetail id={18}/>} />
-        <Route path="/sampleCreation" element={<SampleCreation />} />
-        <Route path="/patientForm" element={<PatientForm />} />
-        <Route path="/formDetail" element={<FormDetail />} />
+        <Route path="/upload" element={<PrivateRoute component={<SampleCreation />}/>} />
+        <Route path="/upload/patient" element={<PrivateRoute component={<PatientForm />}/>} />
+        <Route path="/upload/sample" element={<PrivateRoute component={<FormDetail />} />}/>
         <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
       </Routes>
  

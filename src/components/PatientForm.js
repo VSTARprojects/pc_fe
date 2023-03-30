@@ -69,13 +69,6 @@ function PatientForm({setPatientId}) {
      
     console.log(`Name: ${name}\n PhoneNo: ${phone_number}\nGender: ${gender}`);
 
-    // let config = {
-    //     headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         "Authorization": "Token ce3b119c6856ae942772f8c1693ddff40d574959",
-    //     }
-    //   }
-
     var formData = new FormData();
     formData.append("name", name);
     formData.append("sex", gender);
@@ -99,87 +92,6 @@ function PatientForm({setPatientId}) {
   };
 
   return (
- 
-    // <Container sx={{ width: "1000" }}>
-    //   <Box
-    //     sx={{
-    //       marginTop: 8,
-    //       display: "flex",
-    //       flexDirection: "column",
-    //       alignItems: "center",
-    //     }}
-    //   >
-    //     <Typography component="h1" variant="h5">
-    //       Patient Form
-    //     </Typography>
-    //     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-    //       {/* <TextField
-    //                 label="Patient ID"
-    //                 type="text"
-    //                 value={id}
-    //                 onChange={(event) => setId(event.target.value)}
-    //                 margin="normal"
-    //                 fullWidth
-    //                 required
-    //             /> */}
-    //       <TextField
-    //         type="text"
-    //         label="Patient Name"
-    //         value={name}
-    //         onChange={(event) => setName(event.target.value)}
-    //         margin="none"
-    //         fullWidth
-    //         required
-    //       />
-
-    //       <Typography>Gender</Typography>
-    //       <Box sx={{ marginLeft: 10 }}>
-    //         <RadioGroup value={gender} onChange={handleGenderChange} required>
-    //           <FormControlLabel value="MALE" control={<Radio />} label="Male" />
-    //           <FormControlLabel
-    //             value="FEMALE"
-    //             control={<Radio />}
-    //             label="Female"
-    //           />
-    //           <FormControlLabel
-    //             value="OTHER"
-    //             control={<Radio />}
-    //             label="Other"
-    //           />
-    //           <FormControlLabel
-    //             value="NOT_SAY"
-    //             control={<Radio />}
-    //             label="Pefer not to say"
-    //           />
-    //         </RadioGroup>
-    //       </Box>
-    //       <TextField
-    //         label="Date of Birth"
-    //         type="date"
-    //         value={dob}
-    //         onChange={(event) => setDob(event.target.value)}
-    //         margin="normal"
-    //         fullWidth
-    //         required
-    //       />
-
-    //       <TextField
-    //         label="Phone number"
-    //         type="text"
-    //         value={phone_number}
-    //         onChange={(event) => setphoneNo(event.target.value)}
-    //         margin="normal"
-    //         fullWidth
-    //         required
-    //       />
-
-    //       <Button type="submit" variant="contained" color="primary">
-    //         Submit
-    //       </Button>
-    //     </Box>
-    //   </Box>
-    // </Container>
-
     <form onSubmit={handleSubmit} className={classes.formContainer}>
        <Typography variant="h5" className={classes.title}>
         Patient Form

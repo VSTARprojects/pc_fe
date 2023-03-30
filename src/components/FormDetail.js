@@ -16,12 +16,14 @@ import {
 import SampleData from "./SampleData";
 import { useNavigate } from "react-router-dom";
 import SampleService from "../services/SampleService";
+import Autocomplete from '@mui/material/Autocomplete';
 
 function FormDetail({patientId}) {
     const navigate = useNavigate();
 
   const [id, setId] = useState("");
   const [pid, setPid] = useState(patientId != -1? patientId : "");
+  const [pname, setPname] = useState("");
   const [collection_datetime, setCollectionDatetime] = useState("");
   const [diagnosis_code, setDiagnosisCode] = useState("");
   const [origin, setOrigin] = useState("");
@@ -30,12 +32,14 @@ function FormDetail({patientId}) {
   const [type, setType] = useState("");
   const [image, setImage] = useState(null);
   const [human_label, setHL] = useState("");
+  const [patients_data, setPatientsData] = useState([{"label": "id: patient name"}]);
+  const [patient_value, setPatientValue] = useState(patients_data[0]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(`owner: ${id}\n Patient: ${pid}\n date_collected: ${image}`);
     let formData = new FormData();
-    formData.append("patient", pid);
+    formData.append("patient", parseInt(pid));
     formData.append("date_collected", collection_datetime);
     formData.append("diagnosis_code", diagnosis_code);
     formData.append("type", type);
@@ -64,6 +68,50 @@ function FormDetail({patientId}) {
     setImage(file);
   };
 
+  useEffect(() => {
+    if(pid != -1) {
+      for(var ind in patients_data) {
+        if(patients_data[ind]["id"] == pid) {
+          console.log("yooo")
+          // setPname(patients_data[ind]["name"])
+          setPatientValue(patients_data[ind]["label"])
+        }
+      }
+    }
+  }, [pid])
+
+  useEffect(() => {
+    SampleService.getallPatients().then((respose) => {
+      const patients_data = [{"label": "id: patient name"}]
+      const patients = respose.data
+      for(var ind in patients) {
+        // console.log(patients[ind])
+        patients_data.push({"label": patients[ind].id + ": " + patients[ind].name, "id": patients[ind].id, "name": patients[ind].name})
+
+        if(pid == patients[ind].id) {
+          // setPname(patients[ind].name, () => {
+          //   console.log("new pname", pname)
+          // })
+          // console.log("me idhar")
+          // setPatientValue(patients_data[ind]["label"])
+        }
+      }
+      setPatientsData(patients_data)
+    }).catch((error) => {
+      alert("Something seems to be wrong, please try again later!")
+        console.log(error)
+    })
+  })
+
+  const getPatientValue = () => {
+    for(var ind in patients_data) {
+      if(patients_data[ind]["id"] == pid) {
+        return patients_data[ind]["label"]
+      }
+    }
+    return patients_data[0]["label"]
+  }
+
     return (
     <>
     <Container sx={{ width: "200" }}>
@@ -86,12 +134,30 @@ function FormDetail({patientId}) {
           Sample Form
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
+          {/* <TextField
             type="text"
             label="Patient Id"
-            value={pid}
+            // value={pid}
             onChange={(event) => setPid(event.target.value)}
             margin="normal"
+            fullWidth
+            required
+          /> */}
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            isOptionEqualToValue={(option, value) => option.id == value.id}
+            options={patients_data}
+            value={getPatientValue()}
+            renderInput={(params) => <TextField {...params} label="Patient" />}
+            onChange={(event) => {
+              var ind = event.target.dataset.optionIndex;
+              if(patients_data[ind]) {
+                console.log(patients_data[ind].name)
+                // setPname(patients_data[ind]["name"])
+                setPid(patients_data[ind]["id"])
+              }
+            }}
             fullWidth
             required
           />

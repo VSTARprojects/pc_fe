@@ -99,6 +99,18 @@ class SampleService {
     console.log(response)    
     return response
   }
+
+  async setSample(formData) {
+    let config = {
+        headers: {
+            "Authorization": `Token ${AuthService.getToken()}`,
+            "Content-Type": "multipart/form-data",
+        }
+    }
+    const response =  await axios.post(API_URL + '/samples', formData, config)
+    console.log(response)    
+    return response
+  }
 }
 
 export default new SampleService();

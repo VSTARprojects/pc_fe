@@ -9,8 +9,6 @@ import Predict from './components/Predict';
 import SampleTable from './components/SampleTable';
 import SampleData from './components/SampleData';
 import SampleDetail from './components/SampleDetail';
-import MyModal from './components/MyModal';
-
 function App() {
   return (
     <div >
@@ -23,7 +21,7 @@ function App() {
         <Route path="/sampledetail/:id" element={<SampleData />} />
         <Route path="/samplelist" element={<SampleTable />} />
         <Route path="/sample" element={<SampleDetail />} />
-        <Route path="/modal" element={<MyModal />} />
+        
       </Routes>
  
     </div>

@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import SampleService from '../services/SampleService';
 import SampleDetail from './SampleDetail';
+import CommentsTable from './CommentsTable';
 
 const style = {
   position: 'absolute',
@@ -35,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SampleData ()  {
+  const data = [
+    { id: 1, username: 'Alice', comment: 'Lorem ipsum dolor sit amet' },
+    { id: 2, username: 'Bob', comment: 'Consectetur adipiscing elit' },
+    { id: 3, username: 'Charlie', comment: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua' }
+  ];
+
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -517,9 +524,9 @@ function SampleData ()  {
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
           Pathology Report
     </Typography>
-    <Box sx={{m: 5}}>
+    {/* <Box sx={{m: 5}}>
         <SampleDetail id={id.id} />
-    </Box>
+    </Box> */}
     <Box textAlign='center'>
       <Button
           variant="contained"
@@ -551,9 +558,15 @@ function SampleData ()  {
   
           </Modal>
     </Box>
-    {/* <hr/> */}
+    <hr/> 
+    <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
+          Comments
+    </Typography>
+    <CommentsTable data={data} />
 
     </div>
+
+
   );
 };
 

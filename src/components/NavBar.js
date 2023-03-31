@@ -18,6 +18,7 @@ import AuthService from '../services/AuthService';
 import { useSelector, useDispatch } from 'react-redux';
 import { sign_out } from '../actions';
 import { useNavigate } from "react-router-dom";
+import {Link} from 'react-router-dom';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -26,11 +27,12 @@ function NavBar() {
  
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
   var pages = ['Predict']
-  const private_pages = ['Upload']
+  const private_pages = ['Upload', 'Samples']
 
   const isLogged =  useSelector(state => state.isLogged)
   if(!isLogged) {
     pages.push("Login")
+    // pages.push("Home")
   } else {
     pages = pages.concat(private_pages)
   }
@@ -58,6 +60,10 @@ function NavBar() {
       navigate("/predict", {replace:true})
     } else if(element == "Upload") {
       navigate("/upload", {replace:true})
+    } else if(element == "Home") {
+      navigate("/home", {replace:true})
+    } else if(element == "Samples") {
+      navigate("/samples", {replace:true})
     }
     handleCloseNavMenu()
   }
@@ -91,7 +97,11 @@ function NavBar() {
               textDecoration: 'none',
             }}
           >
-            STAR PATHO
+
+            <Link to={(isLogged ? ("/samples") : "/home")} style={{textDecoration: "none", color:"white"}}>
+               STAR PATHO
+            </Link> 
+
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

@@ -7,12 +7,12 @@ import Auth from './components/Auth';
 import NavBar from './components/NavBar'
 import Predict from './components/Predict';
 import SampleTable from './components/SampleTable';
+import SampleData from './components/SampleData';
 import SampleDetail from './components/SampleDetail';
 import SampleCreation from './components/SampleCreation';
 import FormDetail from './components/FormDetail';
 import PatientForm from './components/PatientForm';
 import { Navigate } from 'react-router-dom';
-
 function App() {
   return (
     <div >
@@ -25,6 +25,8 @@ function App() {
         <Route path="/upload" element={<PrivateRoute component={<SampleCreation />}/>} />
         <Route path="/upload/patient" element={<PrivateRoute component={<PatientForm />}/>} />
         <Route path="/upload/sample" element={<PrivateRoute component={<FormDetail />} />}/>
+        <Route path="/sampledetail/:id" element={<SampleData />} />
+        <Route path="/samplelist" element={<SampleTable />} />
         <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
       </Routes>
  

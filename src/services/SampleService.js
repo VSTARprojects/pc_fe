@@ -78,6 +78,22 @@ class SampleService {
     
     return samples
   }
+
+
+  async setAnnotations(annotations) {
+    let config = {
+        headers: {
+            "Authorization": `Token ${AuthService.getToken()}`,
+        }
+    }
+
+    console.log("back", annotations)
+    
+    // console.log(API_URL + 'samples/search/', {"query":query}, config)
+    // const response =  await axios.post(API_URL + '/samples/search', {"query":query}, config)
+
+    
+  }
 }
 
 export default new SampleService();

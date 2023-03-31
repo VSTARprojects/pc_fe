@@ -43,11 +43,16 @@ function SampleData ()  {
       const curr_sample = sample
       curr_sample.predicted_label = new_sample.predicted_label
       setsample(curr_sample)
+      setprediction(new_sample.predicted_label)
+      setOpen(true)
+    }).catch((error) => {
+      alert("something went wrong while prediting.");
+      console.log(error)
     })
-    setOpen(true)
   };
   const handleClose = () => setOpen(false);
   const [sample, setsample] = useState([]);
+  const [prediction, setprediction] = useState("");
   const classes = useStyles();
 
 
@@ -94,44 +99,6 @@ function SampleData ()  {
 
   return (
     <div> 
-    <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
-          Pathology Report
-    </Typography>
-    <Box sx={{m: 5}}>
-        <SampleDetail id={id.id} />
-    </Box>
-    <Box textAlign='center'>
-      <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          style={{ textTransform: "none" }}
-          href=""
-          target="_blank"
-          sx={{mb:3, mt:4, width: 400}}
-          onClick={handleOpen}
-
-        >
-          PREDICT
-        </Button>
-
-        <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-           <div className={classes.paper}>
-              <h2 id="simple-modal-title">Prediction</h2>
-              <p id="simple-modal-description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
-              </p>
-             <Button variant="contained" color="primary" onClick={handleClose}>Close</Button>
-          </div>
-  
-          </Modal>
-    </Box>
-    <hr/>
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"75px", fontWeight:"bold"}}>
           Patient Details
     </Typography>
@@ -544,6 +511,47 @@ function SampleData ()  {
         </div>
         
     </Container>
+
+    <hr/>
+
+    <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
+          Pathology Report
+    </Typography>
+    <Box sx={{m: 5}}>
+        <SampleDetail id={id.id} />
+    </Box>
+    <Box textAlign='center'>
+      <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          style={{ textTransform: "none" }}
+          href=""
+          target="_blank"
+          sx={{mb:3, mt:4, width: 400}}
+          onClick={handleOpen}
+
+        >
+          PREDICT
+        </Button>
+
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+           <div className={classes.paper}>
+              <h2 id="simple-modal-title">{prediction}</h2>
+              <p id="simple-modal-description">
+                Our model has predicted the given sample as: {prediction}
+              </p>
+             <Button variant="contained" color="primary" onClick={handleClose}>Close</Button>
+          </div>
+  
+          </Modal>
+    </Box>
+    {/* <hr/> */}
 
     </div>
   );

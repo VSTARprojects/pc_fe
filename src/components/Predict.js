@@ -10,6 +10,8 @@ import SampleService from "../services/SampleService";
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
+    backgroundColor: "black",
+    color:"white"
   },
   input: {
     display: "none",
@@ -36,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 0,
     right: 0,
+  },
+  background: {
+    backgroundImage: `url(https://img.freepik.com/free-photo/medical-technology-icon-set-health-wellness_53876-104940.jpg?w=1060&t=st=1680280466~exp=1680281066~hmac=383c0dd2a5c2fe76996afb70472362215c55c02de42dcf214046590ee20f1d07)`,
+    // backgroundSize: 'cover',
+    
+    //filter: 'blur(1px)', // add a blur filter
+    height: '100vh', // set the height to the viewport height
   },
 }));
 
@@ -98,8 +107,13 @@ export default function Predict() {
   };
 
   return (
-    <Box sx={{m:5}}>
-       <Grid container justifyContent='center'>
+     
+    <Box sx={{ m: 5 }}>
+      {files.length === 0 && (
+      <Grid container justifyContent='center'   className={classes.background}  style={{ height: "100vh"}}>
+          <Grid item style={{
+            marginTop:"5rem"
+          }}> 
         <input
           accept="image/*"
           className={classes.input}
@@ -108,7 +122,7 @@ export default function Predict() {
           type="file"
           onChange={handleFileUpload}
         />
-        <label htmlFor="contained-button-file">
+        <label htmlFor="contained-button-file" >
           <Button
             variant="contained"
             color="default"
@@ -119,8 +133,10 @@ export default function Predict() {
           >
             Upload File
           </Button>
-        </label>
-      </Grid>
+          </label>
+          </Grid>
+        </Grid>
+        )}
       
       {files.length > 0 && (
         <>

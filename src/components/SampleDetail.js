@@ -44,7 +44,9 @@ export default function SampleDetail({id}) {
                     imageIds: [imageId],
                     currentImageIdIndex: 0
                 });
-                setAnnots(JSON.parse(response.data.annotations))
+                if(JSON.parse(response.data.annotations)) {
+                    setAnnots(JSON.parse(response.data.annotations))
+                }
    
                 setLoading(false);
             })

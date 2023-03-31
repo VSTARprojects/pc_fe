@@ -9,6 +9,10 @@ import Predict from './components/Predict';
 import SampleTable from './components/SampleTable';
 import SampleData from './components/SampleData';
 import SampleDetail from './components/SampleDetail';
+import SampleCreation from './components/SampleCreation';
+import FormDetail from './components/FormDetail';
+import PatientForm from './components/PatientForm';
+import { Navigate } from 'react-router-dom';
 function App() {
   return (
     <div >
@@ -20,7 +24,10 @@ function App() {
         <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} /> */}
         <Route path="/sampledetail/:id" element={<SampleData />} />
         <Route path="/samplelist" element={<SampleTable />} />
-        <Route path="/sample" element={<SampleDetail />} />
+        <Route path="/sample" element={<SampleDetail id={18}/>} />
+        <Route path="/sampleCreation" element={<SampleCreation />} />
+        <Route path="/patientForm" element={<PatientForm />} />
+        <Route path="/formDetail" element={<FormDetail />} />
         
       </Routes>
  

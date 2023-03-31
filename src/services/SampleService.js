@@ -44,6 +44,15 @@ class SampleService {
     return samples
   }
 
+  async get_sample(id) {
+    let config = {
+      headers: {
+          "Authorization": `Token ${AuthService.getToken()}`,
+      }
+    }
+    return axios.get(API_URL + `/samples/${id}`, config)
+  }
+
   async search(query) {
     let config = {
         headers: {
@@ -80,19 +89,27 @@ class SampleService {
   }
 
 
-  async setAnnotations(annotations) {
+  async setAnnotations(sample_id, annotations) {
     let config = {
         headers: {
             "Authorization": `Token ${AuthService.getToken()}`,
         }
     }
+    const response =  await axios.post(API_URL + '/samples/annotations', {"sample_id":sample_id, "annotations": annotations}, config)
+    console.log(response)    
+    return response
+  }
 
-    console.log("back", annotations)
-    
-    // console.log(API_URL + 'samples/search/', {"query":query}, config)
-    // const response =  await axios.post(API_URL + '/samples/search', {"query":query}, config)
-
-    
+  async setSample(formData) {
+    let config = {
+        headers: {
+            "Authorization": `Token ${AuthService.getToken()}`,
+            "Content-Type": "multipart/form-data",
+        }
+    }
+    const response =  await axios.post(API_URL + '/samples', formData, config)
+    console.log(response)    
+    return response
   }
 }
 

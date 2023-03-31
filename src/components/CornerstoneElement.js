@@ -76,7 +76,7 @@ class CornerstoneElement extends React.Component {
       toolStack: [],
       modalOpen: false,
       fileName: '',
-      annotations: [],
+      toolData: {},
     };
 
     this.onImageRendered = this.onImageRendered.bind(this);
@@ -131,7 +131,14 @@ class CornerstoneElement extends React.Component {
     cornerstone.reset(this.element);
   }
 
-  save = () => {
+  save = () => {    
+    const modalOpen = true;
+    this.setState({modalOpen});
+  }
+
+  modalOnSave = (fileName) => {
+    // this.setState({fileName: fileName, modalOpen: false});
+
     var allToolData = {};
     var toolTypes = ['probe', 'ellipticalRoi', 'rectangleRoi', 'highlight', 'freehand' ,'length', 'angle'];
     for (var i = 0; i < toolTypes.length; i++) {
@@ -143,14 +150,13 @@ class CornerstoneElement extends React.Component {
     }
     const viewport = cornerstone.getViewport(this.element);
 
-    const annotStr = JSON.stringify({toolData: allToolData, viewport: viewport})
-    this.setState({annotations: [...this.state.annotations, annotStr]})
-    
-    const modalOpen = true;
-    this.setState({modalOpen});
+    const annot = {fileName: fileName, toolData: allToolData, viewport: viewport}
+    this.props.setAnnotations(annot);
 
+    this.setState({modalOpen: false})
   }
 
+ 
   render() {
     return (
       <div>
@@ -295,7 +301,7 @@ class CornerstoneElement extends React.Component {
                 </div>
             </Grid>
         </Grid>
-        <SaveAsModal open={this.state.modalOpen} onSave={(fileName) => {this.setState({fileName: fileName, modalOpen: false});SampleService.setAnnotations(this.state.annotations);}} onCancel={() => {this.setState({modalOpen: false})}}/>
+        <SaveAsModal open={this.state.modalOpen} onSave={(fileName) => {this.modalOnSave(fileName)}} onCancel={() => {this.setState({modalOpen: false})}}/>
       </div>
     );
   }
@@ -313,38 +319,9 @@ class CornerstoneElement extends React.Component {
 
   onNewImage() {
     const enabledElement = cornerstone.getEnabledElement(this.element);
-
     this.setState({
       imageId: enabledElement.image.imageId
-    });
-
-    const receivedAnnotations = this.props.annotations
-    console.log(receivedAnnotations)
-    if(receivedAnnotations) {
-        const parsedAnnotations = JSON.parse(receivedAnnotations)
-        // console.log(parsedAnnotations)
-        const toolData = parsedAnnotations["toolData"]
-        const viewport = parsedAnnotations["viewport"]
-
-        if(toolData) {
-            var allToolData = JSON.parse(toolData);
-            for (var toolType in allToolData) {
-                if (allToolData.hasOwnProperty(toolType)) {
-                    for (var i = 0; i < allToolData[toolType].data.length; i++) {
-                        var tData = allToolData[toolType].data[i];
-                        cornerstoneTools.addToolState(this.element, toolType, tData);
-                    }
-                }
-            }
-            cornerstone.updateImage(this.element);
-        }
-
-        if(viewport) {
-            cornerstone.setViewport(this.element, JSON.parse(viewport));
-            cornerstone.updateImage(this.element);
-        }
-    }
-    
+    });    
   }
 
   componentDidMount() {
@@ -386,12 +363,8 @@ class CornerstoneElement extends React.Component {
         this.onImageRendered
       );
       element.addEventListener("cornerstonenewimage", this.onNewImage);
-      window.addEventListener("resize", this.onWindowResize);
+      window.addEventListener("resize", this.onWindowResize);    
     });
-
-
-    
-    
   }
 
   componentWillUnmount() {
@@ -410,14 +383,57 @@ class CornerstoneElement extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const stackData = cornerstoneTools.getToolState(this.element, "stack");
-    const stack = stackData.data[0];
-    stack.currentImageIdIndex = this.state.stack.currentImageIdIndex;
-    stack.imageIds = this.state.stack.imageIds;
-    cornerstoneTools.addToolState(this.element, "stack", stack);
+    if(stackData) {
+        const stack = stackData.data[0];
+        stack.currentImageIdIndex = this.state.stack.currentImageIdIndex;
+        stack.imageIds = this.state.stack.imageIds;
+        cornerstoneTools.addToolState(this.element, "stack", stack);
+    }
+
+    
+    
 
     //const imageId = stack.imageIds[stack.currentImageIdIndex];
     //cornerstoneTools.scrollToIndex(this.element, stack.currentImageIdIndex);
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(nextProps, () => {
+        const receivedAnnotations = this.props.annotations
+        console.log("received", receivedAnnotations)
+        if(receivedAnnotations) {
+            // this.redo()           
+    
+            const toolData = receivedAnnotations["toolData"]
+            const viewport = receivedAnnotations["viewport"]
+    
+            if(toolData) {
+                var allToolData = toolData;
+                for (var toolType in allToolData) {
+                    if (allToolData.hasOwnProperty(toolType)) {
+                        for (var i = 0; i < allToolData[toolType].data.length; i++) {
+                            var tData = allToolData[toolType].data[i];
+                            cornerstoneTools.addToolState(this.element, toolType, tData);
+                        }
+                    }
+                }
+                cornerstone.updateImage(this.element);
+                // this.setState({toolData: toolData})
+                console.log(toolData)
+            }
+    
+            if(viewport) {
+                cornerstone.setViewport(this.element, viewport);
+                cornerstone.updateImage(this.element);
+                this.setState({viewport: viewport})
+            }
+
+            
+        }
+    })
+    return nextProps
+  }
+  
 }
 
 export default CornerstoneElement;

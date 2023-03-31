@@ -20,6 +20,36 @@ import SampleListData from './SampleListData';
 import { Container, Link } from "@material-ui/core";
 import SampleService from "../services/SampleService";
 import SampleData from "./SampleData";
+import SharedCommentService from "../services/SharedCommentService";
+
+const defsharedSamples = [
+  {
+    id: 1,
+    status: 'pending',
+    sample: 'Sample A',
+    sender: 'John Doe',
+     
+    sender_comment: '',
+    receiver_comment: '',
+  },
+  {
+    id: 2,
+    status: 'completed',
+    sample: 'pathology',
+    sender: 'Alice Lee',
+    sender_comment: 'look at this, it is very suspicious',
+    receiver_comment: 'Received on 3/29/2023',
+  },
+  {
+    id: 3,
+    status: 'cancelled',
+    sample: 'Sample C',
+    sender: 'David Kim',
+    sender_comment: 'Cannot able to determine, need help',
+    receiver_comment: '',
+  },
+  // Add more objects as needed
+];
 
 export default function SampleTable() {
   const [page, setPage] = React.useState(0);
@@ -27,37 +57,11 @@ export default function SampleTable() {
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("");
+  const [sharedSamples, setSharedSamples] = useState(defsharedSamples);
   const header = ["id", "patientName", "age", "origin", "date_of_collection", "predictedLabel", "humanLabel"];
   const heads = ["id", "status", "sample", "sender", "sender_comment", "receiver_comment"];
   
-  const sharedSamples = [
-    {
-      id: 1,
-      status: 'pending',
-      sample: 'Sample A',
-      sender: 'John Doe',
-       
-      sender_comment: '',
-      receiver_comment: '',
-    },
-    {
-      id: 2,
-      status: 'completed',
-      sample: 'pathology',
-      sender: 'Alice Lee',
-      sender_comment: 'look at this, it is very suspicious',
-      receiver_comment: 'Received on 3/29/2023',
-    },
-    {
-      id: 3,
-      status: 'cancelled',
-      sample: 'Sample C',
-      sender: 'David Kim',
-      sender_comment: 'Cannot able to determine, need help',
-      receiver_comment: '',
-    },
-    // Add more objects as needed
-  ];
+  
 
   const [samples, setSamples] = useState([])
 
@@ -88,7 +92,34 @@ export default function SampleTable() {
   }
 
   useEffect(() => {
-        fetchSamples()        
+        fetchSamples();
+        SharedCommentService.get_shared_comments().then((response) => {
+          const shared_comments = response.data
+          const shared_samplest = []
+          for(var ind in shared_comments) {
+            const shared_comment = shared_comments[ind]
+            SampleService.getSample(shared_comment.sample).then((res) => {
+              const sample_data = res.data
+              console.log(shared_comment, sample_data)
+              const tshared_sample = {
+                id: shared_comment.id,
+                status: shared_comment.status,
+                sample: shared_comment.sample,
+                sender: shared_comment.sender,
+                sender_comment: shared_comment.sender_comment,
+                receiver_comment: '',
+              }
+              shared_samplest.push(tshared_sample)
+            }).catch((error) => {
+              alert("Something went wrong in fetching sample detail")
+              console.log(error)
+            })
+          }
+          setSharedSamples(shared_samplest)
+        }).catch((error) => {
+          alert("Something went wrong in fetching shared samples")
+          console.log(error)
+        })
     }, [])
 
   const emptyRows =
@@ -330,7 +361,7 @@ export default function SampleTable() {
                          {sample.receiver_comment}
                     </TableCell>
                     <TableCell align="left">
-                        <Link href={`/sampledetail/${sample.id}`}>View Details</Link>
+                        <Link href={`/sampledetail/${sample.sample}`}>View Details</Link>
                     </TableCell>
                   </TableRow>
                   // to={`/sampledetail/${samples.id}`}

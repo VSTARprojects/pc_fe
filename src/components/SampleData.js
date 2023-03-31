@@ -58,6 +58,21 @@ function SampleData ()  {
     })
   };
   const handleClose = () => setOpen(false);
+  const [predOpen, setPredOpen] = React.useState(false);
+  const handlePredOpen = () => {
+    SampleService.predict_sample(id.id).then((response) => {
+      const new_sample = response.data
+      const curr_sample = sample
+      curr_sample.predicted_label = new_sample.predicted_label
+      setsample(curr_sample)
+      setprediction(new_sample.predicted_label)
+      setPredOpen(true)
+    }).catch((error) => {
+      alert("something went wrong while prediting.");
+      console.log(error)
+    })
+  };
+  const handlePredClose = () => setPredOpen(false);
   const [sample, setsample] = useState([]);
   const [prediction, setprediction] = useState("");
   const classes = useStyles();
@@ -535,7 +550,7 @@ function SampleData ()  {
           style={{ textTransform: "none" }}
           href=""
           target="_blank"
-          sx={{mb:3, mt:4, width: 400}}
+          sx={{mb:3, mt:4, mx:5, width: 400}}
           onClick={handleOpen}
 
         >
@@ -554,6 +569,37 @@ function SampleData ()  {
                 Our model has predicted the given sample as: {prediction}
               </p>
              <Button variant="contained" color="primary" onClick={handleClose}>Close</Button>
+          </div>
+  
+          </Modal>
+
+
+          <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          style={{ textTransform: "none" }}
+          href=""
+          target="_blank"
+          sx={{mb:3, mt:4, width: 400}}
+          onClick={handlePredOpen}
+
+        >
+          SHARE
+        </Button>
+
+        <Modal
+            open={predOpen}
+            onClose={handlePredClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+           <div className={classes.paper}>
+              <h2 id="simple-modal-title">Share</h2>
+              <p id="simple-modal-description">
+                Our model has predicted the given sample as: {prediction}
+              </p>
+             <Button variant="contained" color="primary" onClick={handleOpen}>Close</Button>
           </div>
   
           </Modal>

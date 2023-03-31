@@ -19,13 +19,14 @@ import { visuallyHidden } from "@mui/utils";
 import SampleListData from './SampleListData';
 import { Container, Link } from "@material-ui/core";
 import SampleService from "../services/SampleService";
+import SampleData from "./SampleData";
 
 export default function SampleTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("date_of_collection");
+  const [orderBy, setOrderBy] = useState("");
   const header = ["id", "patientName", "age", "origin", "date_of_collection", "predictedLabel", "humanLabel"];
   
   const [samples, setSamples] = useState([])
@@ -185,9 +186,10 @@ export default function SampleTable() {
                          {sample.humanLabel}
                     </TableCell>
                     <TableCell align="left">
-                        <Link>View Details</Link>
+                        <Link href={`/sampledetail/${sample.id}`}>View Details</Link>
                     </TableCell>
                   </TableRow>
+                  // to={`/sampledetail/${samples.id}`}
                 )
             )}
 

@@ -56,13 +56,6 @@ export default function SampleDetail({ id }) {
   const [loading, setLoading] = useState(true);
   const [annots, setAnnots] = useState([]);
   const [currAnnot, setCurrAnnot] = useState({});
-export default function SampleDetail({id}) {
-    const classes = useStyles();
-    const [data, setData] = useState({})
-    const [stack, setStack] = useState(defaultStack)
-    const [loading, setLoading] = useState(true);
-    const [annots, setAnnots] = useState([])
-    const [currAnnot, setCurrAnnot] = useState({})
 
   const setAnnotations = (new_annots) => {
     console.log("hmmmmmmmmmm", new_annots);

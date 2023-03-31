@@ -539,9 +539,9 @@ function SampleData ()  {
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
           Pathology Report
     </Typography>
-    {/* <Box sx={{m: 5}}>
+    <Box sx={{m: 5}}>
         <SampleDetail id={id.id} />
-    </Box> */}
+    </Box>
     <Box textAlign='center'>
       <Button
           variant="contained"

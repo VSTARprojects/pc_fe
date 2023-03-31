@@ -55,7 +55,7 @@ class SampleService {
     return samples
   }
 
-  async getSample(id) {
+  getSample(id) {
     let config = {
       headers: {
           "Authorization": `Token ${AuthService.getToken()}`,

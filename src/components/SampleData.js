@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SampleService from '../services/SampleService';
 import SampleDetail from './SampleDetail';
 import CommentsTable from './CommentsTable';
+import SharedCommentService from '../services/SharedCommentService';
 
 const style = {
   position: 'absolute',
@@ -74,6 +75,7 @@ function SampleData ()  {
   };
   const handlePredClose = () => setPredOpen(false);
   const [sample, setsample] = useState([]);
+  const [comments, setcomments] = useState([]);
   const [prediction, setprediction] = useState("");
   const classes = useStyles();
 
@@ -82,7 +84,7 @@ function SampleData ()  {
   // console.log(Object.values(id));
 
     const fetchAll = async () => {
-      SampleService.getSample(id.id).then((response) => {
+      await SampleService.getSample(id.id).then((response) => {
         const tsample = response.data
         SampleService.getPatient(tsample.patient).then((res) => {
           const tpatient = res.data
@@ -110,6 +112,32 @@ function SampleData ()  {
       .catch((error) => {
           alert("Something went wrong while fetching sample details")
           console.log(error)
+      })
+
+
+      await SharedCommentService.get_shared_comments_by_sample(id.id).then((response) => {
+        // setcomments()
+        
+        const commentst = response.data
+        console.log("yoooooo", commentst)
+        const curr_comments = comments
+        for(var ind in commentst) {
+          const comment = commentst[ind]
+          var present = false
+          for(var i in comments) {
+            if(comments[i].id == comment.id) {
+              present = true
+            }
+          }
+          if(!present) {
+            curr_comments.push({id: comment.id, username: comment.receiver, comment: comment.receiver_comment})
+          }
+        }         
+        setcomments(curr_comments)
+        console.log(response)
+      }).catch((error) => {
+        alert("Something went wrong while fetching shared comments")
+        console.log(error)
       })
     }
    
@@ -608,7 +636,7 @@ function SampleData ()  {
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
           Comments
     </Typography>
-    <CommentsTable data={data} />
+    <CommentsTable data={comments} />
 
     </div>
 

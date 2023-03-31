@@ -17,6 +17,21 @@ class SharedCommentService {
     const response =  axios.get(API_URL + "/sharedcomments/", config)
     return response
   }
+
+  get_shared_comments_by_sample(sid) {
+    const data = {
+        "sample_id": sid,
+    }
+    let config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${AuthService.getToken()}`,
+        }
+    }
+
+    const response =  axios.post(API_URL + "/sharedcomments/getsamplecomments", data, config)
+    return response
+  }
 }
 
 export default new SharedCommentService();

@@ -15,6 +15,7 @@ import PatientForm from './components/PatientForm';
 import Profile from './components/Profile';
 import Home from './components/Home';
 import { Navigate } from 'react-router-dom';
+import BarGraph from './components/BarGraph';
 function App() {
   return (
     <div >
@@ -34,6 +35,7 @@ function App() {
         <Route path="/predict" element={<Predict />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/barGraph" element={<BarGraph />} />
         <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
       
       </Routes>

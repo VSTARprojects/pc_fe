@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, Typography, Button } from '@material-ui/core';
 import Grid from '@mui/material/Grid';
 import {Link} from 'react-router-dom'
+import {List, ListItem} from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
  
@@ -10,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#0275d8',
     marginBottom: theme.spacing(2),
     fontWeight:'bold',
-    marginTop:"75px",
+    marginTop:"55px",
     paddingLeft:"30px"
  
   },
@@ -25,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
   },
   body: {
     paddingLeft:"30px",
-    marginBottom: theme.spacing(1),
     display: "block",
     marginLeft:"30px",
     color: "grey"
@@ -45,18 +45,24 @@ const Home = () => {
       <Typography variant="body1" className={classes.subtitle}>
         Get personalized health predictions with just a few clicks
       </Typography>
-    
+     
+     <List style={{listStyleType: 'disc'}}>
+      <ListItem style={{ display: 'list-item', marginLeft:"80px" }}>
       <Typography variant="" className={classes.body}>
         Perform diagnosis for samples using the ML model 
       </Typography>
-
+      </ListItem>
+      <ListItem style={{ display: 'list-item',marginLeft:"80px" }}>
       <Typography variant="body3" className={classes.body}>
         View patient samples with their details
       </Typography>
-      
+      </ListItem>
+      <ListItem style={{ display: 'list-item', marginLeft:"80px" }}>
       <Typography variant="body3" className={classes.body}>
         Share samples with the other pathologists
       </Typography>
+      </ListItem>
+    </List>
 
       <div style={{paddingLeft:"30px"}}>
         <Button variant="contained" className={classes.button}>

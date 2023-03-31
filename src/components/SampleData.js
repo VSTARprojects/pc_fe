@@ -1,13 +1,13 @@
 import React from 'react';
 import { Container, Typography, Button, Box } from "@mui/material";
 import {Link} from 'react-router-dom';
-import SampleService from '../services/SampleService';
 import Grid from "@mui/material/Grid";
 import Modal from '@mui/material/Modal';
 import SampleListData from './SampleListData';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import SampleService from '../services/SampleService';
 
 const style = {
   position: 'absolute',
@@ -38,7 +38,7 @@ function SampleData ()  {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [samples, setSamples] = useState([]);
+  const [sample, setsample] = useState([]);
   const classes = useStyles();
 
 
@@ -46,17 +46,13 @@ function SampleData ()  {
   // console.log(Object.values(id));
 
     const fetchAll = async () => {
-        try {
-            const samples = await SampleService.get_user_samples()
-            setSamples(samples)
-            
-        } catch(e) {
-            console.log(e)
-            setSamples(SampleListData);
-            // console.log(samples);
-        
-        }
-      
+      SampleService.get_sample(id.id).then((response) => {
+         console.log(response.data)
+      })
+      .catch((error) => {
+          alert("Something went wrong while fetching sample details")
+          console.log(error)
+      })
     }
    
     useEffect(() => {
@@ -177,7 +173,7 @@ function SampleData ()  {
           <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
 
-            {samples.id}
+            {sample.id}
 
           </Typography>
           </Grid>
@@ -205,7 +201,7 @@ function SampleData ()  {
           </Grid>
           <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-            {samples.sex}
+            {sample.sex}
           </Typography>
           </Grid>
           </Grid>
@@ -232,7 +228,7 @@ function SampleData ()  {
           </Grid>
           <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-            {samples.dob}
+            {sample.dob}
           </Typography>
           </Grid>
           </Grid>
@@ -315,7 +311,7 @@ function SampleData ()  {
           </Grid>
         <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-            {samples.phone_number}
+            {sample.phone_number}
           </Typography>
           </Grid>
         </Grid>
@@ -342,7 +338,7 @@ function SampleData ()  {
           </Grid>
           <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-            {samples.date_added}
+            {sample.date_added}
           </Typography>
           </Grid>
           </Grid>
@@ -369,7 +365,7 @@ function SampleData ()  {
           </Grid>
           <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-            {samples.type}
+            {sample.type}
           </Typography>
           </Grid>
           </Grid>
@@ -408,7 +404,7 @@ function SampleData ()  {
           </Grid>
           <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-           {samples.origin}
+           {sample.origin}
           </Typography>
           </Grid>
           </Grid>
@@ -435,7 +431,7 @@ function SampleData ()  {
           </Grid>
           <Grid item xs={7}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-           {samples.symptoms}
+           {sample.symptoms}
           </Typography>
           </Grid>
           </Grid>
@@ -463,7 +459,7 @@ function SampleData ()  {
           </Grid>
           <Grid item xs={7}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-            {samples.comments}
+            {sample.comments}
           </Typography>
           </Grid>
           </Grid>
@@ -490,7 +486,7 @@ function SampleData ()  {
           </Grid>
           <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-            {samples.predicted_label}
+            {sample.predicted_label}
           </Typography>
           </Grid>
           </Grid>
@@ -517,7 +513,7 @@ function SampleData ()  {
           </Grid>
           <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
-            {samples.human_label}
+            {sample.human_label}
           </Typography>
           </Grid>
           </Grid>

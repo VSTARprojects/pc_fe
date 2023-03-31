@@ -28,7 +28,7 @@ export default function SampleDetail({id}) {
 
     useEffect(() => {
         if(annots.length > 0) {
-            console.log(annots)
+            console.log(annots, "send to back")
             SampleService.setAnnotations(id, JSON.stringify(annots))
         }
     }, [annots])

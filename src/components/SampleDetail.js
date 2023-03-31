@@ -1,9 +1,42 @@
 import { Box, Grid } from '@material-ui/core';
 import { AnnouncementSharp } from '@material-ui/icons';
+import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from 'react'
 import SampleService from '../services/SampleService';
 import CornerstoneElement from './CornerstoneElement';
 import Loading from './Loading';
+import { List, ListItem, Typography } from "@mui/material";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+      margin: "5rem",
+    //   flexGrow: 1,
+    },
+  
+    listContainer: {
+      width: "50%",
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.black,
+    },
+    listItem: {
+      backgroundColor: "#00ffff",
+      marginTop: "0.5rem",
+      "&:hover": {
+        backgroundColor: "white",
+      },
+    },
+    imageContainer: {
+      margin: theme.spacing(1),
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    title: {
+      marginBottom: "1rem",
+      color: "#1a76d2",
+      fontWeight: "strong",
+    },
+  }));
 
 const imageId =
   "http://localhost:8000/media/uploads/colonca979_ikAC9JD.jpeg";
@@ -14,6 +47,7 @@ const defaultStack = {
 };
 
 export default function SampleDetail({id}) {
+    const classes = useStyles();
     const [data, setData] = useState({})
     const [stack, setStack] = useState(defaultStack)
     const [loading, setLoading] = useState(true);
@@ -39,7 +73,7 @@ export default function SampleDetail({id}) {
  
     useEffect(() => {
         async function fetchData() {
-            SampleService.get_sample(id).then((response) => {
+            SampleService.getSample(id).then((response) => {
                 setStack({
                     imageIds: [imageId],
                     currentImageIdIndex: 0
@@ -70,24 +104,46 @@ export default function SampleDetail({id}) {
 
   return (
     <div>
-        <Box sx={{m:5, p:5}}>
-            <Grid container justifyContent='center'>
-                <Grid item sm={6}>
-                    <button onClick={()=> setCurrAnnot({})}>
-                        original
-                    </button>
-                    {annots.map((annot, index) => {
-                        return (
-                            <button key={index} onClick={() => setCurrAnnot(annot)}>
-                                {annot["fileName"]}
-                            </button>
-                        )                        
-                    })}
-                </Grid>
-                {/* <CornerstoneElement stack={{ ...stack }} annotations={'\"{\"toolData\":{},\"viewport\":{\"scale\":1.6,\"translation\":{\"x\":0,\"y\":0},\"voi\":{\"windowWidth\":331.69921875,\"windowCenter\":334.4404296875},\"invert\":false,\"pixelReplication\":false,\"rotation\":0,\"hflip\":false,\"vflip\":false,\"labelmap\":false}}\"'}/> */}
-                <CornerstoneElement stack={{ ...stack }} setAnnotations={setAnnotations} annotations={currAnnot}/>
-            </Grid>
-       </Box>
+        <Box className={classes.root}>
+        <Grid container spacing={0}>
+            <Grid item xs={12} sm={2} style={{ textAlign: "left" }}></Grid>
+          <Grid item xs={12} sm={2}>
+            <Box className={classes.listContainer}>
+              <Typography className={classes.title}>Variations</Typography>
+              <List component="nav">
+                <ListItem
+                  button
+                  onClick={() => setCurrAnnot({})}
+                  className={classes.listItem}
+                >
+                  original
+                </ListItem>
+                {annots.map((annot, index) => {
+                  return (
+                    <ListItem
+                      button
+                      key={index}
+                      onClick={() => setCurrAnnot(annot)}
+                      className={classes.listItem}
+                    >
+                      {annot["fileName"]}
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={8} style={{ textAlign: "left" }}>
+            <Box className={classes.imageContainer}>
+              <CornerstoneElement
+                stack={{ ...stack }}
+                setAnnotations={setAnnotations}
+                annotations={currAnnot}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </div>
   )
 }

@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import SampleService from '../services/SampleService';
+import SampleDetail from './SampleDetail';
 
 const style = {
   position: 'absolute',
@@ -36,7 +37,15 @@ const useStyles = makeStyles((theme) => ({
 function SampleData ()  {
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    SampleService.predict_sample(id.id).then((response) => {
+      const new_sample = response.data
+      const curr_sample = sample
+      curr_sample.predicted_label = new_sample.predicted_label
+      setsample(curr_sample)
+    })
+    setOpen(true)
+  };
   const handleClose = () => setOpen(false);
   const [sample, setsample] = useState([]);
   const classes = useStyles();
@@ -46,8 +55,30 @@ function SampleData ()  {
   // console.log(Object.values(id));
 
     const fetchAll = async () => {
-      SampleService.get_sample(id.id).then((response) => {
-         console.log(response.data)
+      SampleService.getSample(id.id).then((response) => {
+        const tsample = response.data
+        SampleService.getPatient(tsample.patient).then((res) => {
+          const tpatient = res.data
+          console.log(tsample, tpatient)
+          setsample({
+            pid: tsample.patient,
+            patientName: tpatient.name,
+            phone_number: tpatient.phone_number,
+            dob: tpatient.dob,
+            sex: tpatient.sex,
+            date_collected: tsample.date_collected,
+            date_added: tsample.date_added,
+            type: tsample.type,
+            origin: tsample.origin,
+            symptoms: tsample.symptoms,
+            comments: tsample.comments,
+            predicted_label: tsample.predicted_label,
+            human_label: tsample.human_label,
+          })
+        }).catch((error) => {
+            alert("Something went wrong while fetching patient details")
+            console.log(error)
+        })
       })
       .catch((error) => {
           alert("Something went wrong while fetching sample details")
@@ -62,56 +93,29 @@ function SampleData ()  {
 
 
   return (
-    <div>
-      <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
+    <div> 
+    <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
           Pathology Report
     </Typography>
-    <Container sx={{ boxShadow: 4, p: 3, mt:3, width:"80%"}}>
+    <Box sx={{m: 5}}>
+        <SampleDetail id={id.id} />
+    </Box>
+    <Box textAlign='center'>
+      <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          style={{ textTransform: "none" }}
+          href=""
+          target="_blank"
+          sx={{mb:3, mt:4, width: 400}}
+          onClick={handleOpen}
 
-      <div>
-        <Grid item xs direction="row" container spacing={3} component="div">
-        <Grid item xs={4}>
-          <Typography
-            variant="body1"
-            color="black"
-            fontWeight={"bold"}
-            marginBottom={"10px"}
-          >
-            Sample Image
-          </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Typography 
-            variant="body1"
-            color="black"
-            fontWeight={"bold"}
-            sx={{ display: "inline" }}>:</Typography>
-          </Grid>
-          <Grid item xs={4}>
-          <Typography  sx={{mt:1}}>
-            <img
-              src="https://rawgit.com/cornerstonejs/cornerstoneWebImageLoader/master/examples/Renal_Cell_Carcinoma.jpg"
-              alt="example"
-             
-             />
-           
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            style={{ textTransform: "none" }}
-            href=""
-            target="_blank"
-            sx={{mb:3, mt:4}}
-            onClick={handleOpen}
+        >
+          PREDICT
+        </Button>
 
-          >
-            PREDICT
-          </Button>
-
-  
-          <Modal
+        <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="simple-modal-title"
@@ -126,14 +130,8 @@ function SampleData ()  {
           </div>
   
           </Modal>
-          
-          </Grid>
-          </Grid>
-        </div> 
-       
-
-    </Container>
-
+    </Box>
+    <hr/>
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"75px", fontWeight:"bold"}}>
           Patient Details
     </Typography>
@@ -146,8 +144,7 @@ function SampleData ()  {
           fontWeight={"bold"}
           marginBottom={"10px"}
         >
-             {/* {sample.patientName}   */} Noor Khan
-           
+            {sample.patientName}         
           
         </Typography>
 
@@ -173,7 +170,7 @@ function SampleData ()  {
           <Grid item xs={4}>
           <Typography variant="body1" sx={{ display: "inline" }}>
 
-            {sample.id}
+            {sample.pid}
 
           </Typography>
           </Grid>
@@ -327,6 +324,33 @@ function SampleData ()  {
             sx={{ display: "inline" }}
           >
             Date of Collection&nbsp;
+          </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Typography 
+            variant="body1"
+            color="black"
+            fontWeight={"bold"}
+            sx={{ display: "inline" }}>:</Typography>
+          </Grid>
+          <Grid item xs={4}>
+          <Typography variant="body1" sx={{ display: "inline" }}>
+            {sample.date_collected}
+          </Typography>
+          </Grid>
+          </Grid>
+        </div>
+        <hr />
+        <div style={{ marginBottom: "10px" }}>
+        <Grid item xs direction="row" container spacing={3} component="div">
+        <Grid item xs={4}>
+          <Typography
+            variant="body1"
+            color="black"
+            fontWeight={"bold"}
+            sx={{ display: "inline" }}
+          >
+            Date Added&nbsp;
           </Typography>
           </Grid>
           <Grid item xs={1}>

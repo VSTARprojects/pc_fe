@@ -92,13 +92,11 @@ function NavBar() {
               textDecoration: 'none',
             }}
           >
-<<<<<<< HEAD
-            STAR PATHO
-=======
+
             <Link to="/home" style={{textDecoration: "none", color:"white"}}>
                STAR PATHO
             </Link> 
->>>>>>> 92a34ca (added home component)
+
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

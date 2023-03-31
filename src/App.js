@@ -21,19 +21,10 @@ function App() {
       <NavBar/>
 
       <Routes>
-<<<<<<< HEAD
         <Route path="/login" element={<Auth/>} />
-        <Route path="/predict" element={<Predict />} />
-        <Route path="/sample" element={<SampleDetail id={20}/>} />
         <Route path="/upload" element={<PrivateRoute component={<SampleCreation />}/>} />
         <Route path="/upload/patient" element={<PrivateRoute component={<PatientForm />}/>} />
         <Route path="/upload/sample" element={<PrivateRoute component={<FormDetail />} />}/>
-        <Route path="/sampledetail/:id" element={<SampleData />} />
-        <Route path="/samplelist" element={<SampleTable />} />
-        <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
-=======
-        {/* <Route path="/login" element={<Auth/>} />
-        <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} /> */}
         <Route path="/sampledetail/:id" element={<SampleData />} />
         <Route path="/samplelist" element={<SampleTable />} />
         <Route path="/sample" element={<SampleDetail id={18}/>} />
@@ -43,8 +34,8 @@ function App() {
         <Route path="/predict" element={<Predict />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/home" element={<Home />} />
-        
->>>>>>> 92a34ca (added home component)
+        <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
+      
       </Routes>
  
     </div>

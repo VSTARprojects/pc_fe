@@ -12,6 +12,8 @@ import SampleDetail from './components/SampleDetail';
 import SampleCreation from './components/SampleCreation';
 import FormDetail from './components/FormDetail';
 import PatientForm from './components/PatientForm';
+import Profile from './components/Profile';
+import Home from './components/Home';
 import { Navigate } from 'react-router-dom';
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
       <NavBar/>
 
       <Routes>
+<<<<<<< HEAD
         <Route path="/login" element={<Auth/>} />
         <Route path="/predict" element={<Predict />} />
         <Route path="/sample" element={<SampleDetail id={20}/>} />
@@ -28,6 +31,20 @@ function App() {
         <Route path="/sampledetail/:id" element={<SampleData />} />
         <Route path="/samplelist" element={<SampleTable />} />
         <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
+=======
+        {/* <Route path="/login" element={<Auth/>} />
+        <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} /> */}
+        <Route path="/sampledetail/:id" element={<SampleData />} />
+        <Route path="/samplelist" element={<SampleTable />} />
+        <Route path="/sample" element={<SampleDetail id={18}/>} />
+        <Route path="/sampleCreation" element={<SampleCreation />} />
+        <Route path="/patientForm" element={<PatientForm />} />
+        <Route path="/formDetail" element={<FormDetail />} />
+        <Route path="/predict" element={<Predict />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/home" element={<Home />} />
+        
+>>>>>>> 92a34ca (added home component)
       </Routes>
  
     </div>

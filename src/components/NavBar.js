@@ -18,6 +18,7 @@ import AuthService from '../services/AuthService';
 import { useSelector, useDispatch } from 'react-redux';
 import { sign_out } from '../actions';
 import { useNavigate } from "react-router-dom";
+import {Link} from 'react-router-dom';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -91,7 +92,13 @@ function NavBar() {
               textDecoration: 'none',
             }}
           >
+<<<<<<< HEAD
             STAR PATHO
+=======
+            <Link to="/home" style={{textDecoration: "none", color:"white"}}>
+               STAR PATHO
+            </Link> 
+>>>>>>> 92a34ca (added home component)
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

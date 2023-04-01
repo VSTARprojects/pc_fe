@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import SampleService from '../services/SampleService';
 import SampleDetail from './SampleDetail';
 import CommentsTable from './CommentsTable';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
+
 import YourComment from './YourComment';
 
 const style = {
@@ -59,6 +61,30 @@ function SampleData ()  {
     })
   };
   const handleClose = () => setOpen(false);
+  const [userName, setUserName] = useState('');
+  const [message, setMessage] = useState('');
+  const [shareOpen, setShareOpen] = useState(false);
+  const handleShareOpen = () => setShareOpen(true);
+  const handleShareClose = () => {
+    setShareOpen(false);
+    setUserName('');
+    setMessage('');
+  }
+  const handleShare = () =>{
+    handleShareClose();
+    console.log(userName);
+    console.log(message);
+    setUserName('');
+    setMessage('');
+  }
+  const handleUserNameChange = (event) =>{
+    const userName = event.target.value;
+    setUserName(userName);
+  }
+  const handleMessageChange = (event) =>{
+    const message = event.target.value;
+    setMessage(message);
+  }
   const [predOpen, setPredOpen] = React.useState(false);
   const handlePredOpen = () => {
     SampleService.predict_sample(id.id).then((response) => {
@@ -583,27 +609,30 @@ function SampleData ()  {
           href=""
           target="_blank"
           sx={{mb:3, mt:4, width: 400}}
-          onClick={handlePredOpen}
+          onClick={handleShareOpen}
 
         >
           SHARE
         </Button>
 
-        <Modal
-            open={predOpen}
-            onClose={handlePredClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-           <div className={classes.paper}>
-              <h2 id="simple-modal-title">Share</h2>
-              <p id="simple-modal-description">
-                Our model has predicted the given sample as: {prediction}
-              </p>
-             <Button variant="contained" color="primary" onClick={handleOpen}>Close</Button>
-          </div>
-  
-          </Modal>
+        <Dialog open={shareOpen} onClose={handleShareClose} aria-labelledby="save-as-dialog-title">
+          <DialogTitle id="save-as-dialog-title">Share Sample</DialogTitle>
+          <DialogContent>
+            <TextField required autoFocus margin="dense" label="User Name" value={userName} onChange={handleUserNameChange} fullWidth />
+          </DialogContent>
+          <DialogContent>
+            <TextField required autoFocus margin="dense" label="Message" value={message} onChange={handleMessageChange} fullWidth />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleShareClose} color="secondary" style={{marginBottom:"30px"}}>
+              Cancel
+            </Button>
+            <Button onClick={handleShare} disabled={!userName || !message} color="primary" style={{marginBottom:"30px"}} >
+              SHARE
+            </Button>
+          </DialogActions>
+        </Dialog>
+
     </Box>
     <hr/> 
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>

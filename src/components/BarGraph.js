@@ -11,6 +11,8 @@ import {
 
 import { Bar } from 'react-chartjs-2';
 
+const LABELS = ['colon adenocarcinoma', 'colon normal', 'gastric adenocarcinoma', 'gastric normal','kidney Chromophobe carcinoma', 'kidney clear cell carinoma', 'kidney papillary carcinoma']
+
 
 function BarGraph(){ 
     Chart.register(
@@ -23,20 +25,19 @@ function BarGraph(){
       );
     return(
   <div>
-    <h1>Bar Chart</h1>
-      <div style={{ maxWidth: "650px" }}>
+      <div style={{ maxWidth: "650px", alignItems: 'center'}}>
         <Bar
           data={{
             // Name of the variables on x-axies for each bar
-            labels: ["1st bar", "2nd bar", "3rd bar", "4th bar"],
+            labels: LABELS,
             datasets: [
               {
                 // Label for bars
                 label: "total count/value",
                 // Data or value of your each variable
-                data: [1552, 1319, 613, 1400],
+                data: [1552, 1319, 613, 1400, 1200, 1500, 2000],
                 // Color of each bar
-                backgroundColor: ["orange", "green", "red", "blue"],
+                backgroundColor: ["orange", "green", "red", "blue", "pink", "maroon", "brown"],
                 // Border color of each bar
                 borderColor: ["aqua", "green", "red", "yellow"],
                 borderWidth: 0.5,

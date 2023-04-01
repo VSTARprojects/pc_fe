@@ -25,8 +25,8 @@ function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
  
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-  var pages = ['Predict']
+  const settings = ['Profile', 'Logout'];
+  var pages = ['Predict', 'Stats']
   const private_pages = ['Upload', 'Samples']
 
   const isLogged =  useSelector(state => state.isLogged)
@@ -58,7 +58,9 @@ function NavBar() {
       navigate("/login", {replace:true})
     } else if(element == "Predict") {
       navigate("/predict", {replace:true})
-    } else if(element == "Upload") {
+    } else if(element == "Stats") {
+      navigate("/barGraph", {replace:true})
+    }else if(element == "Upload") {
       navigate("/upload", {replace:true})
     } else if(element == "Home") {
       navigate("/home", {replace:true})
@@ -73,6 +75,8 @@ function NavBar() {
       AuthService.logout()
       dispath(sign_out())
       navigate("/login")
+    } else if(element == "Profile") {
+      navigate("/profile")
     }
     handleCloseUserMenu()
   }

@@ -13,6 +13,7 @@ import CommentsTable from './CommentsTable';
 import SharedCommentService from '../services/SharedCommentService';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 
+import YourComment from './YourComment';
 
 const style = {
   position: 'absolute',
@@ -45,7 +46,7 @@ function SampleData ()  {
     { id: 3, username: 'Charlie', comment: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua' }
   ];
 
-
+  let commentData = { value: 'true', comment: '' };
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     SampleService.predict_sample(id.id).then((response) => {
@@ -167,7 +168,7 @@ function SampleData ()  {
               present = true
             }
           }
-          if(!present) {
+          if(!present && comment.status == "complete") {
             curr_comments.push({id: comment.id, username: comment.receiver, comment: comment.receiver_comment})
           }
         }         
@@ -677,8 +678,12 @@ function SampleData ()  {
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
           Comments
     </Typography>
-    <CommentsTable data={comments} />
-
+      <CommentsTable data={comments} />
+    <hr />
+    <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
+          Your Comment
+    </Typography>
+      <YourComment data={commentData} />
     </div>
 
 

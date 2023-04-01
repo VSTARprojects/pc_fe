@@ -38,24 +38,14 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-
-
-const imageId = "http://localhost:8000/media/uploads/colonca979_ikAC9JD.jpeg";
-
-
+const imageId =
+  "http://localhost:8000/media/uploads/colonca979_ikAC9JD.jpeg";
 
 const defaultStack = {
-  imageIds: [imageId],
-  currentImageIdIndex: 0,
+    imageIds: [imageId],
+    currentImageIdIndex: 0
 };
 
-export default function SampleDetail({ id }) {
-  const classes = useStyles();
-  const [data, setData] = useState({});
-  const [stack, setStack] = useState(defaultStack);
-  const [loading, setLoading] = useState(true);
-  const [annots, setAnnots] = useState([]);
-  const [currAnnot, setCurrAnnot] = useState({});
 export default function SampleDetail({id}) {
     const classes = useStyles();
     const [data, setData] = useState({})
@@ -64,18 +54,12 @@ export default function SampleDetail({id}) {
     const [annots, setAnnots] = useState([])
     const [currAnnot, setCurrAnnot] = useState({})
 
-  const setAnnotations = (new_annots) => {
-    console.log("hmmmmmmmmmm", new_annots);
-    // setCurrAnnot(new_annots)
-    setAnnots([...annots, new_annots]);
-  };
-
-  useEffect(() => {
-    if (annots.length > 0) {
-      console.log(annots);
-      SampleService.setAnnotations(id, JSON.stringify(annots));
+    const setAnnotations = (new_annots) => {
+        console.log("hmmmmmmmmmm", new_annots)
+        // setCurrAnnot(new_annots)
+        setAnnots([...annots, new_annots])
     }
-  }, [annots]);
+
     useEffect(() => {
         if(annots.length > 0) {
             console.log(annots, "send to back")
@@ -83,37 +67,13 @@ export default function SampleDetail({id}) {
         }
     }, [annots])
 
-  useEffect(() => {
-    console.log("currAnnot", currAnnot);
-  }, [currAnnot]);
-
-  useEffect(() => {
-    async function fetchData() {
-      SampleService.get_sample(id)
-        .then((response) => {
-          setStack({
-            imageIds: [imageId],
-            currentImageIdIndex: 0
-          });
-          setAnnots(JSON.parse(response.data.annotations));
-
-          setLoading(false);
-        })
-        .catch((error) => {
-          alert("Something went wrong while fetching sample details");
-          console.log(error);
-        });
-    }
-    fetchData();
-  }, []);
     useEffect(() => {
         console.log("currAnnot", currAnnot)
     }, [currAnnot])
  
     useEffect(() => {
         async function fetchData() {
-          SampleService.getSample(id)
-            .then((response) => {
+            SampleService.getSample(id).then((response) => {
                 setStack({
                     imageIds: [imageId],
                     currentImageIdIndex: 0
@@ -137,9 +97,10 @@ export default function SampleDetail({id}) {
     
 
 
-  if (loading) {
-    return <Loading />;
-  }
+    if (loading) {
+        return <Loading/>;
+      } 
+
 
   return (
     <div>
@@ -184,5 +145,5 @@ export default function SampleDetail({id}) {
         </Grid>
       </Box>
     </div>
-  );
+  )
 }

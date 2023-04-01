@@ -19,6 +19,7 @@ function App() {
       <NavBar/>
 
       <Routes>
+      <Route path="/sad" element={<SampleData />} />
         <Route path="/login" element={<Auth/>} />
         <Route path="/predict" element={<Predict />} />
         <Route path="/sample" element={<SampleDetail id={20}/>} />
@@ -27,7 +28,7 @@ function App() {
         <Route path="/upload/sample" element={<PrivateRoute component={<FormDetail />} />}/>
         <Route path="/sampledetail/:id" element={<SampleData />} />
         <Route path="/samplelist" element={<SampleTable />} />
-        <Route path="/*" element={<PrivateRoute component={<SampleTable />} />} />
+        <Route path="/*" element={<SampleTable />}  />
       </Routes>
  
     </div>

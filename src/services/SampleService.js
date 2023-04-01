@@ -143,6 +143,10 @@ class SampleService {
     return response
   }
 
+  
+
+
+
   async getallPatients() {
     let config = {
         headers: {

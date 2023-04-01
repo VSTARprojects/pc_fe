@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SampleService from '../services/SampleService';
 import SampleDetail from './SampleDetail';
 import CommentsTable from './CommentsTable';
+import YourComment from './YourComment';
 
 const style = {
   position: 'absolute',
@@ -42,7 +43,7 @@ function SampleData ()  {
     { id: 3, username: 'Charlie', comment: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua' }
   ];
 
-
+  let commentData = { value: 'true', comment: '' };
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     SampleService.predict_sample(id.id).then((response) => {
@@ -539,9 +540,9 @@ function SampleData ()  {
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
           Pathology Report
     </Typography>
-    {/* <Box sx={{m: 5}}>
+    <Box sx={{m: 5}}>
         <SampleDetail id={id.id} />
-    </Box> */}
+    </Box>
     <Box textAlign='center'>
       <Button
           variant="contained"
@@ -608,8 +609,12 @@ function SampleData ()  {
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
           Comments
     </Typography>
-    <CommentsTable data={data} />
-
+      <CommentsTable data={data} />
+    <hr />
+    <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
+          Your Comment
+    </Typography>
+      <YourComment data={commentData} />
     </div>
 
 

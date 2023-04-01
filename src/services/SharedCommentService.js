@@ -18,7 +18,7 @@ class SharedCommentService {
     return response
   }
 
-  set_shared_commit(data) {
+  set_shared_comment(data) {
     let config = {
         headers: {
             "Content-Type": "application/json",

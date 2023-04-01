@@ -74,8 +74,20 @@ function SampleData ()  {
     handleShareClose();
     console.log(userName);
     console.log(message);
-    setUserName('');
-    setMessage('');
+    const shared_commit = {
+      "receiver": userName,
+      "sender_message": message,
+      "status": "incomplete",
+      "sample": id.id
+    }
+    SharedCommentService.set_shared_comment(shared_commit).then((response) => {
+      console.log(response)
+      setUserName('');
+      setMessage('');
+    }).catch((e) => {
+      console.log(e)
+    })
+    
   }
   const handleUserNameChange = (event) =>{
     const userName = event.target.value;

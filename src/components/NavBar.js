@@ -103,7 +103,7 @@ function NavBar() {
           >
 
             <Link to={(isLogged ? ("/samples") : "/home")} style={{textDecoration: "none", color:"white"}}>
-               STAR PATHO
+               STARS PATHO
             </Link> 
 
           </Typography>

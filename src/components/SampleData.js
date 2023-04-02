@@ -168,7 +168,7 @@ function SampleData ()  {
               present = true
             }
           }
-          if(!present && comment.status == "complete") {
+          if(!present) {
             curr_comments.push({id: comment.id, username: comment.receiver, comment: comment.receiver_comment})
           }
         }         

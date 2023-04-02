@@ -44,14 +44,14 @@ const Home = () => {
       <Typography variant="h4" className={classes.title}>
         Empowering Health Decisions with ML
       </Typography>
-      <Typography variant="body1" className={classes.subtitle}>
+      {/* <Typography variant="body1" className={classes.subtitle}>
         Get personalized health predictions with just a few clicks
       </Typography>
-     
+      */}
      <List style={{listStyleType: 'disc'}}>
       <ListItem style={{ display: 'list-item', marginLeft:"80px" }}>
       <Typography variant="" className={classes.body}>
-        Perform diagnosis for samples using the ML model 
+        Predict labels for samples using the ML model 
       </Typography>
       </ListItem>
       <ListItem style={{ display: 'list-item',marginLeft:"80px" }}>

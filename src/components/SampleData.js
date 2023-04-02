@@ -636,7 +636,7 @@ function SampleData ()  {
     </Typography>
       <CommentsTable data={comments} />
     
-      <YourComment data={commentData} reloadParent={(x) => setReload(x)} isParentReload={reload} addComment={(c)=>{setcomments([...comments, c])}} sid={share_id} status={share_status}/>
+      <YourComment data={commentData} reloadParent={(x) => setReload(x)} isParentReload={reload} addComment={(c)=>{setcomments([...comments, c])}} sample_id={id.id} sid={share_id} status={share_status}/>
     </div>
 
 

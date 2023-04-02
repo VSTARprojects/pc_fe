@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, TextField, Button } f
 import { makeStyles } from '@material-ui/core/styles';
 import SharedCommentService from '../services/SharedCommentService';
 import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -41,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function YourComment({ data, reloadParent, isParentReload, addComment, sid, status = "complete" }) {
+function YourComment({ data, reloadParent, isParentReload, addComment, sample_id, sid, status = "complete"}) {
+  const navigate = useNavigate();
     
   const classes = useStyles();
   const [showForm, setShowForm] = useState(false);
@@ -52,6 +54,8 @@ function YourComment({ data, reloadParent, isParentReload, addComment, sid, stat
     setComment(event.target.value);
   };
 
+  
+
   const handleSubmit = (event) => {
       event.preventDefault();
       setCheckboxValue('false');
@@ -61,7 +65,8 @@ function YourComment({ data, reloadParent, isParentReload, addComment, sid, stat
       addComment({id: comment.id, username: comment.receiver, comment: comment.receiver_comment})
       console.log(isParentReload, !isParentReload)
       reloadParent(!isParentReload)
-      
+      navigate(`/sampledetail/${sample_id}?sid=${sid}&status=complete`, {replace:true})
+      setCheckboxValue(false)
     }).catch((error) => {
       console.log(error)
     })

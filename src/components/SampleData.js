@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import Modal from '@mui/material/Modal';
 import SampleListData from './SampleListData';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import SampleService from '../services/SampleService';
 import SampleDetail from './SampleDetail';
@@ -65,6 +65,7 @@ function SampleData ()  {
   const [userName, setUserName] = useState('');
   const [message, setMessage] = useState('');
   const [shareOpen, setShareOpen] = useState(false);
+  const [reload, setReload] = useState(false);
   const handleShareOpen = () => setShareOpen(true);
   const handleShareClose = () => {
     setShareOpen(false);
@@ -72,31 +73,32 @@ function SampleData ()  {
     setMessage('');
   }
   const handleShare = () =>{
-    handleShareClose();
-    console.log(userName);
-    console.log(message);
     const shared_commit = {
       "receiver": userName,
-      "sender_message": message,
+      "sender_comment": message,
       "status": "incomplete",
       "sample": id.id
     }
     SharedCommentService.set_shared_comment(shared_commit).then((response) => {
       console.log(response)
-      setUserName('');
-      setMessage('');
+      handleShareClose();
     }).catch((e) => {
       console.log(e)
+      handleShareClose();
+      alert(e.response.data)
     })
     
   }
   const handleUserNameChange = (event) =>{
     const userName = event.target.value;
+    console.log("username update")
     setUserName(userName);
   }
   const handleMessageChange = (event) =>{
-    const message = event.target.value;
-    setMessage(message);
+    console.log(message)
+    const t = event.target.value;
+    console.log("message update", t)
+    setMessage(t);
   }
   const [predOpen, setPredOpen] = React.useState(false);
   const handlePredOpen = () => {
@@ -120,7 +122,12 @@ function SampleData ()  {
 
 
   let id=useParams();
-  // console.log(Object.values(id));
+  const queryParameters = new URLSearchParams(window.location.search)
+  const share_id = queryParameters.get("sid")
+  const share_status = queryParameters.get("status")
+  console.log("share_id", share_id)
+  // const name = queryParameters.get("name")
+
 
     const fetchAll = async () => {
       await SampleService.getSample(id.id).then((response) => {
@@ -168,7 +175,8 @@ function SampleData ()  {
               present = true
             }
           }
-          if(!present) {
+          console.log(comment.status, comment.id)
+          if(!present && comment.status == "complete") {
             curr_comments.push({id: comment.id, username: comment.receiver, comment: comment.receiver_comment})
           }
         }         
@@ -184,12 +192,16 @@ function SampleData ()  {
       fetchAll()        
   }, [])
 
+  
+  useEffect(() => {
+    console.log(reload)
+  }, [reload])
 
 
   return (
     <div> 
     <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"75px", fontWeight:"bold"}}>
-          Patient Details
+        Sample Details
     </Typography>
 
     <Container sx={{ boxShadow: 4, p: 2, mt:3, width:"80%", mb:8}}>
@@ -287,62 +299,6 @@ function SampleData ()  {
           </Grid>
         </div>
        <hr />
-        {/* <div style={{ marginBottom: "10px" }}>
-        <Grid item xs direction="row" container spacing={3} component="div">
-        <Grid item xs={4}>
-          <Typography
-            variant="body1"
-            color="black"
-            fontWeight={"bold"}
-            sx={{ display: "inline" }}
-          >
-            Height&nbsp;
-          </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Typography 
-            variant="body1"
-            color="black"
-            fontWeight={"bold"}
-            sx={{ display: "inline" }}>:</Typography>
-          </Grid>
-          <Grid item xs={4}>
-          <Typography variant="body1" sx={{ display: "inline" }}>
-            170 cm
-          </Typography>
-          </Grid>
-          </Grid>
-        </div>
-        <hr />
-        
-        <Grid item xs direction="row" container spacing={3} component="div">
-          <Grid item xs={4}>
-          <Typography
-            variant="body1"
-            color="black"
-            fontWeight={"bold"}
-            sx={{ display: "inline" }}
-            xs={4}
-          >
-            Weight&nbsp;
-          </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Typography 
-            variant="body1"
-            color="black"
-            fontWeight={"bold"}
-            sx={{ display: "inline" }}>:</Typography>
-          </Grid>
-          <Grid item xs={4}>
-          <Typography variant="body1" sx={{ display: "inline" }} xs={4}>
-            60 kg
-          </Typography>
-          </Grid>
-        </Grid> 
-       
-        <hr /> */}
-
         <div style={{ marginBottom: "10px" }}>
         <Grid item xs direction="row" container spacing={3} component="div">
         <Grid item xs={4}>
@@ -675,15 +631,12 @@ function SampleData ()  {
 
     </Box>
     <hr/> 
-    <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
+    <Typography variant="h5" color="prima ry" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
           Comments
     </Typography>
       <CommentsTable data={comments} />
-    <hr />
-    <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
-          Your Comment
-    </Typography>
-      <YourComment data={commentData} />
+    
+      <YourComment data={commentData} reloadParent={(x) => setReload(x)} isParentReload={reload} addComment={(c)=>{setcomments([...comments, c])}} sid={share_id} status={share_status}/>
     </div>
 
 

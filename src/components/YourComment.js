@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import SharedCommentService from '../services/SharedCommentService';
+import { Typography } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -39,13 +41,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function YourComment({ data }) {
+function YourComment({ data, reloadParent, isParentReload, addComment, sid, status = "complete" }) {
     
   const classes = useStyles();
   const [showForm, setShowForm] = useState(false);
   const [comment, setComment] = useState(data.comment);
-  const [checkboxValue, setCheckboxValue] = useState( data.value);
-
+  const [checkboxValue, setCheckboxValue] = useState(status == "incomplete");
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -55,11 +56,25 @@ function YourComment({ data }) {
       event.preventDefault();
       setCheckboxValue('false');
     // submit the comment and do any necessary processing here
+    SharedCommentService.add_receiver_comment(comment, sid).then((response) => {
+      const comment = response.data
+      addComment({id: comment.id, username: comment.receiver, comment: comment.receiver_comment})
+      console.log(isParentReload, !isParentReload)
+      reloadParent(!isParentReload)
+      
+    }).catch((error) => {
+      console.log(error)
+    })
   };
 
   return (
     <div>
-      {checkboxValue ? (
+      {checkboxValue && (
+        <div>
+          <hr />
+    <Typography variant="h5" color="primary" style={{marginBottom:"20px", textAlign:"center", marginTop:"50px", fontWeight:"bold"}}>
+          Your Comment
+    </Typography>
         <form className={classes.formContainer} onSubmit={handleSubmit}>
           <TextField
             className={classes.formInput}
@@ -72,19 +87,7 @@ function YourComment({ data }) {
             Submit
           </Button>
         </form>
-      ) : (
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell className={classes.cell}>Comment</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell className={classes.cell}>{comment }</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        </div>
       )}
     </div>
   );

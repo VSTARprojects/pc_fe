@@ -107,7 +107,7 @@ export default function SampleTable() {
                 sample: shared_comment.sample,
                 sender: shared_comment.sender,
                 sender_comment: shared_comment.sender_comment,
-                receiver_comment: '',
+                receiver_comment: shared_comment.receiver_comment,
               }
               shared_samplest.push(tshared_sample)
             }).catch((error) => {
@@ -116,6 +116,7 @@ export default function SampleTable() {
             })
           }
           setSharedSamples(shared_samplest)
+          console.log(sharedSamples);
         }).catch((error) => {
           alert("Something went wrong in fetching shared samples")
           console.log(error)
@@ -361,7 +362,7 @@ export default function SampleTable() {
                          {sample.receiver_comment}
                     </TableCell>
                     <TableCell align="left">
-                        <Link href={`/sampledetail/${sample.sample}`}>View Details</Link>
+                        <Link href={`/sampledetail/${sample.sample}?sid=${sample.id}&status=${sample.status}`}>View Details</Link>
                     </TableCell>
                   </TableRow>
                   // to={`/sampledetail/${samples.id}`}

@@ -1,6 +1,12 @@
 # Pathology Classification Website
 This project provides a user interface for uploading pathology images, predicting their labels, and adding comments and annotations to specific samples. This README specifically covers the React frontend of the application.
 
+There are three separate components for this project:
+
+1. ML Model: https://github.com/VSTARprojects/pc_ml
+2. FrontEnd: https://github.com/VSTARprojects/pc_fe
+3. BackEnd: https://github.com/VSTARprojects/pc_dj
+
 ## Installation
 To install and run the frontend, follow these steps:
 

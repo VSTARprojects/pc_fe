@@ -7,6 +7,10 @@ There are three separate components for this project:
 2. FrontEnd: https://github.com/VSTARprojects/pc_fe
 3. BackEnd: https://github.com/VSTARprojects/pc_dj
 
+## Prerequisites
+- Node.js and npm (Node Package Manager) installed on your machine. You can download them from the official website: https://nodejs.org/en/.
+- Access to the backend API that the React site is designed to communicate with. This API should be up and running before attempting to use the React site. (refer https://github.com/VSTARprojects/pc_dj)
+
 ## Installation
 To install and run the frontend, follow these steps:
 
